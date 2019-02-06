@@ -62,7 +62,17 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/signup", (req, res) => {
-
+    // Check for password match
+    if(!req.body.username || !req.body.password) {
+        return res.send(403, {
+            "message": "Invalid request"
+        });
+    }
+    if(await userExists(req.body.username) == false || await userValidate(req.body.username, req.body.password) == false) {
+        return res.send(403, {
+            "message": "Incorrect username / password."
+        })
+    }
 });
 
 app.get("/list-log", (req, res) => {
