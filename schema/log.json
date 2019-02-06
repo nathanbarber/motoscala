@@ -1,0 +1,46 @@
+{
+    "Log": {
+        "name": {
+            "type": "string",
+            "description": "The name of the log"
+        },
+        "description": {
+            "type": "string",
+            "description": "A short description for the log"
+        },
+        "entries": {
+            "type": "object",
+            "description": "An array of entries, initially empty"
+        }
+    },
+    "Entry": {
+        "id": {
+            "type": "string",
+            "description": "Unique entry specifier"
+        },
+        "contenttype": {
+            "type": "string",
+            "enum": [
+                "text",
+                "href"
+            ],
+            "description": "A specifier between text and asset entries"
+        },
+        "dateCreated": {
+            "type": "number",
+            "description": "Date created timestamp"
+        },
+        "title": {
+            "type": "string",
+            "description": "Title of the entry"
+        },
+        "text": {
+            "type": "string",
+            "description": "The body contents of the entry"
+        },
+        "href": {
+            "type": "string",
+            "description": "A server relative url for an asset"
+        }
+    }
+}
