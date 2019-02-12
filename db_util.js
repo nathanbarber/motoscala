@@ -79,18 +79,50 @@ class DBUtil {
                 "description": description,
                 "entries": []
             }),
-            id = "log" + crypto.randomBytes(64).toString("base64");
-            // Insert into logs and users table
+            id = "log" + crypto.randomBytes(64).toString("base64"),
+            logRes = await this.q(`insert into logs(id, log) values ('${id}', '${log}')`),
+            userLogIds = await this.q(`select logs from users where username='${username}'`),
+            userLogArray = JSON.parse(userLogIds[0].logs);
+        userLogArray.push(id);
+        let userLogRes = await this.q(`update users set logs='${JSON.stringify(userLogArray)}' where username='${username}'`);
+        
+        return (logRes.affectedRows == 1 && userLogRes.changedRows == 1);
     }
     
     async logList(username) {
         var res = await this.q(`select logs from users where username='${username}'`);
-        return res;
+        let logIds = res[0].logs,
+            logIdArray = [];
+        try {
+            logIdArray = JSON.parse(logIds);
+            return {
+                success: true,
+                logs: logIdArray
+            }
+        } catch(err) {
+            console.log(err);
+            return {
+                success: false,
+                error: err
+            }
+        }
     }
     
     async logDump(logid) {
         var res = await this.q(`select log from logs where id='${logid}'`);
-        return res;
+        let log = {};
+        try {
+            log = JSON.parse(res[0].log);
+            return {
+                success: true,
+                log: log
+            }
+        } catch(err) {
+            return {
+                success: false,
+                error: err
+            }
+        }
     }
     
     async logDelete(username, logid) {

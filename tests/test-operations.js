@@ -26,4 +26,22 @@ describe("DBUtil class methods functioning", () => {
         assert.equal(await db.verifyAccessToken("foo", token.token), true);
         db.d();
     });
+    it("can create logs and update the user logID records", async () => {
+        let db = new DBUtil();
+        assert.equal(await db.logCreate("foo", "foo-log", "log for foo"), true);
+        db.d();
+    }); 
+    it("can list the logIDs for a specified user and use them to fetch the corresponding logs", async () => {
+        let db = new DBUtil(),
+            list = await db.logList("foo");
+        assert.equal(list.success, true);
+        assert.equal(Array.isArray(list.logs), true);
+        assert.equal(list.error, undefined);
+
+        let log = await db.logDump(list.logs[0]);
+        assert.equal(log.success, true);
+        assert.equal(log.error, undefined);
+        assert.equal(typeof log.log, "object");
+        db.d();
+    });
 })
