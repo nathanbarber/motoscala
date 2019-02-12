@@ -4,7 +4,7 @@
   "description": "A logging tool for storing changes / modifications to your car in a clean format",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/*"
   },
   "author": "Nathan Barber",
   "license": "ISC",
@@ -13,9 +13,9 @@
     "contentful": "^7.1.0",
     "express": "^4.16.4",
     "jquery": "^3.3.1",
+    "mocha": "^5.2.0",
     "multer": "^1.4.1",
     "mysql": "^2.16.0",
-    "pg": "^7.8.0",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {

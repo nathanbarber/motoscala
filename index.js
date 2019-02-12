@@ -6,17 +6,7 @@ const express = require("express"),
     crypto = require("crypto"),
     fs = require("fs"),
     sv = require("serve-favicon"),
-    {
-        userExists,
-        userCreate,
-        userValidate,
-        generateAccessToken,
-        verifyAccessToken,
-        logCreate,
-        logList,
-        logDump,
-        logDelete
-    } = require("./operations")
+    { DBUtil } = require("./db_util"),
     dist = `${__dirname}/dist`,
     PORT = 8080;
 

@@ -1,16 +1,17 @@
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS logs;
-
-CREATE TABLE users(
-    username VARCHAR(20) PRIMARY KEY NOT NULL,
-    email VARCHAR(40),
-    password VARCHAR(100) NOT NULL,
-    telephone VARCHAR(10),
-    token VARCHAR(100),
-    logs JSON
-);
-
-CREATE TABLE logs(
-    id VARCHAR(100) PRIMARY KEY NOT NULL,
-    log JSON
-);
+USE motoscala;
+DROP TABLE IF EXISTS users; 
+DROP TABLE IF EXISTS logs; 
+CREATE TABLE users (
+    username varchar(20) NOT NULL,
+    email varchar(40),
+    password varchar(100) NOT NULL,
+    telephone varchar(10),
+    token varchar(100),
+    logs JSON,
+    PRIMARY KEY (username)
+); 
+CREATE TABLE logs (
+    id varchar(100) NOT NULL,
+    log JSON,
+    PRIMARY KEY (id)
+); 
