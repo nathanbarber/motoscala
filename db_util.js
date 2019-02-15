@@ -41,22 +41,43 @@ class DBUtil {
     }
 
     async userCreate(username, password, email, telephone) {
-        var res = await this.q(
-            `insert into users(username, password, email, telephone, token, logs) values (
-                '${username}',
-                '${password}',
-                '${email || ''}',
-                '${telephone || ''}',
-                '',
-                '[]'
-            )`
-        );
-        return (res.affectedRows == 1);
+        try {
+            var res = await this.q(
+                `insert into users(username, password, email, telephone, token, logs) values (
+                    '${username}',
+                    '${password}',
+                    '${email || ''}',
+                    '${telephone || ''}',
+                    '',
+                    '[]'
+                )`
+            );
+            return {
+                success: (res.affectedRows == 1)
+            }
+        } catch(err) {
+            return {
+                success: false,
+                error: err
+            }
+        }
     }
     
     async userValidate(username, password, email) {
-        var res = await this.q(`select password from users where username='${username}'`);
-        return res[0].password == password;
+        try {
+            var res = await this.q(`select password from users where username='${username}'`),
+                validated = res[0].password == password;
+            return {
+                success: true,
+                validated: validated
+            }
+        } catch(err) {
+            return {
+                success: false,
+                validated: false,
+                error: err
+            }
+        }
     }
     
     async generateAccessToken(username) {
@@ -69,24 +90,45 @@ class DBUtil {
     }
     
     async verifyAccessToken(username, token) {
-        var res = await this.q(`select token from users where username='${username}'`);
-        return res[0].token == token;
+        try {
+            var res = await this.q(`select token from users where username='${username}'`),
+                validated = (res[0].token == token);
+            return {
+                validated: validated,
+                success: true
+            }
+        } catch(err) {
+            return {
+                success: false,
+                validated: false,
+                error: err
+            }
+        }
     }
     
     async logCreate(username, logname, description) {
-        let log = JSON.stringify({
-                "name": logname,
-                "description": description,
-                "entries": []
-            }),
-            id = "log" + crypto.randomBytes(64).toString("base64"),
-            logRes = await this.q(`insert into logs(id, log) values ('${id}', '${log}')`),
-            userLogIds = await this.q(`select logs from users where username='${username}'`),
-            userLogArray = JSON.parse(userLogIds[0].logs);
-        userLogArray.push(id);
-        let userLogRes = await this.q(`update users set logs='${JSON.stringify(userLogArray)}' where username='${username}'`);
-        
-        return (logRes.affectedRows == 1 && userLogRes.changedRows == 1);
+        try {
+            let log = JSON.stringify({
+                    "name": logname,
+                    "description": description,
+                    "entries": []
+                }),
+                id = "log" + crypto.randomBytes(64).toString("base64"),
+                userLogIds = await this.q(`select logs from users where username='${username}'`),
+                userLogArray = JSON.parse(userLogIds[0].logs);
+            userLogArray.push(id);
+            let userLogRes = await this.q(`update users set logs='${JSON.stringify(userLogArray)}' where username='${username}'`),
+                logRes = await this.q(`insert into logs(id, log) values ('${id}', '${log}')`);
+            return {
+                success: (logRes.affectedRows == 1 && userLogRes.changedRows == 1),
+                logid: id
+            }
+        } catch(err) {
+            return {
+                success: false,
+                error: err
+            }
+        }
     }
     
     async logList(username) {
@@ -126,7 +168,100 @@ class DBUtil {
     }
     
     async logDelete(username, logid) {
-        
+        try {
+            var userLogArray = await this.q(`select logs from users where username='${username}'`),
+                parsedLogArray = JSON.parse(userLogArray[0].logs),
+                newUserLogArray = [];
+            for(let l of parsedLogArray) {
+                if(l != logid) {
+                    newUserLogArray.push(l);
+                }
+            }
+            var stringifiedUserLogArray = JSON.stringify(newUserLogArray),
+                updateUserLogArray = await this.q(`update users set logs='${stringifiedUserLogArray}' where username='${username}'`),
+                logDeleteRes = await this.q(`delete from logs where id='${logid}'`);
+
+            return {
+                success: (logDeleteRes.affectedRows == 1 && updateUserLogArray.changedRows == 1)
+            }
+        } catch(err) {
+            return {
+                success: false,
+                error: err
+            }
+        }
+    }
+
+    async entryCreate(logid, title, text, href) {
+        try {
+            var entry = {
+                    "id": "entry" + crypto.randomBytes(64).toString("base64"),
+                    "title": title,
+                    "text": text,
+                    "href": href || null,
+                    "created": Date.now()
+                },
+                log = await this.q(`select log from logs where id='${logid}'`),
+                parsedLog = JSON.parse(log[0].log);
+            parsedLog.entries.push(entry);
+            var stringifiedLog = JSON.stringify(parsedLog),
+                updateLog = await this.q(`update logs set log='${stringifiedLog}' where id='${logid}'`);
+            return updateLog.changedRows == 1;
+        } catch(err) {
+            return {
+                success: false,
+                error: err
+            }
+        }
+    }
+
+    async entryDelete(logid, entryid) {
+        try {
+            var log = await this.q(`select log from logs where id='${logid}'`),
+                parsedLog = JSON.parse(log[0].log),
+                updatedEntries = [];
+            for(let e of parsedLog.entries) {
+                if(e.id != entryid) {
+                    updatedEntries.push(e);
+                }
+            }
+            parsedLog.entries = updatedEntries;
+            var stringifiedLog = JSON.stringify(parsedLog);
+            var updateLog = await this.q(`update logs set log='${stringifiedLog}' where id='${logid}'`);
+            return updateLog.changedRows == 1;
+        } catch(err) {
+            return {
+                success: false,
+                error: err
+            }
+        }
+    }
+
+    async entryUpdate(logid, entryid, title, text, href) {
+        try {
+            var log = await this.q(`select log from logs where id='${logid}'`),
+                parsedLog = JSON.parse(log[0].log),
+                updatedEntries = [];
+            for(let e of parsedLog.entries) {
+                if(e.id == entryid) {
+                    e.title = title || e.title;
+                    e.text = text || e.text;
+                    e.href = href || e.href;
+                    updatedEntries.push(e);
+                } else {
+                    updatedEntries.push(e);
+                }
+            }
+            parsedLog.entries = updatedEntries;
+            var stringifiedLog = JSON.stringify(parsedLog);
+            var updateLog = await this.q(`update logs set log='${stringifiedLog}' where id='${logid}'`);
+            return updateLog.changedRows == 1;
+        } catch(err) {
+            return {
+                success: false, 
+                error: err
+            }
+        }
     }
 }
 
