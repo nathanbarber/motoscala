@@ -8,7 +8,6 @@ const gulp = require('gulp'),
     nodemon = require("gulp-nodemon"),
     spawn = require("child_process").spawn,
     build = `${__dirname}/client`,
-    pg = require("pg"),
     prod = `${__dirname}/dist`,
     node = undefined;
 
@@ -18,7 +17,6 @@ gulp.task("clean", () => {
 
 gulp.task("css", () => {
     return gulp.src(build + "/**/*.css")
-        .pipe(css())
         .pipe(concat("combined.css"))
         .pipe(gulp.dest(prod))
 })
@@ -35,7 +33,7 @@ gulp.task("combinejs", () => {
 })
 
 gulp.task("lib", () => {
-    return gulp.src(build + "/lib/*")
+    return gulp.src(build + "/lib/**/*")
         .pipe(gulp.dest(prod + "/lib"))
 })
 
@@ -57,11 +55,4 @@ gulp.task("nodemon", () => {
         ext: "js css html",
         ignore: prod
     }).on("restart", ['build'])
-})
-
-gulp.task("db-init", async () => {
-    let psql = new pg.Client();
-    await psql.connect();
-    await psql.query(fs.readFileSync(`${__dirname}/schema/init.sql`).toString());
-    await psql.end();
 });

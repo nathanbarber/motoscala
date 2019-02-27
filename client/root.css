@@ -1,0 +1,69 @@
+:root {
+    --accent-color: #DD6666;
+    --accent-color-lighter: #d18989;
+    --shadow-color-1: #ddd;
+    --font-color-1: #878787;
+    --font-color-2: #efefef;
+    --font-color-3: #545454;
+    --serif: 'New York', Georgia, Times, 'Times New Roman', serif;
+    --transition-time: 150ms;
+}
+
+@font-face {
+    font-family: Source;
+    src: url(lib/font/SourceSansPro-Regular.otf);
+}
+@font-face {
+    font-family: Source;
+    src: url(lib/font/SourceSansPro-Light.otf);
+    font-weight: lighter;
+}
+@font-face {
+    font-family: Source;
+    src: url(lib/font/SourceSansPro-ExtraLight.otf);
+    font-weight: 100;
+}
+@font-face {
+    font-family: Source;
+    src: url(lib/font/SourceSansPro-Semibold.otf);
+    font-weight: bold;
+}
+
+#app {
+    width: 100vw;
+    position: relative;
+    overflow-x: hidden;
+}
+
+#view {
+    width: 100vw;
+    position: relative;
+    min-height: calc(100vh - 90px);
+}
+
+.header {
+    font-size: 25px;
+    line-height: 30px;
+    font-family: var(--serif);
+    margin-top: 60px;
+}
+
+.text {
+    font-size: 16px;
+    line-height: 22px;
+    font-family: Source;
+    margin-top: 30px;
+}
+
+.accent {
+    color: var(--accent-color);
+}
+.color-1 {
+    color: var(--font-color-1);
+}
+.color-2 {
+    color: var(--font-color-2);
+}
+.color-3 {
+    color: var(--font-color-3);
+}

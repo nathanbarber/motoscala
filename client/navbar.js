@@ -1,26 +1,3 @@
-var app = angular.module("motoscala", ['ngRoute']);
-app.config(function($routeProvider, $locationProvider) {
-    $routeProvider
-        .when("/", {
-            templateUrl: "views/home.html",
-            controller: "home"
-        })
-        .when("/signup", {
-            templateUrl: "views/account-signup.html",
-            controller: "account"
-        })
-        .when("/login", {
-            templateUrl: "views/account-login.html", 
-            controller: "account"
-        })
-        .otherwise({
-            redirectTo: "/"
-        });
-});
-
-app.run(function($rootScope) {
-    $rootScope.notLoggedIn = true;
-});
 app.controller("navbar", function($scope, $location) {
     $scope.toHome = function() {
         $location.path("/");
@@ -107,46 +84,4 @@ function hardShut(time) {
         height: "0px"
     });
     $(".menu-items").css("display", "none");
-}
-app.controller("account", function($scope, $location) {
-    $scope.doSignUp = function() {
-        
-    }
-    $scope.doLogin = function() {
-
-    }
-    $scope.storeToken = function() {
-
-    }
-});
-app.controller("home", function($scope, $location) {
-    $scope.toSignUp = function() {
-        $location.path("/signup");
-    }
-})
-
-function animation() {
-    var $canvas = $("#animation"),
-        canvas = $canvas[0],
-        cx = canvas.getContext('2d');
-
-    // DPI SCALAGE
-    canvas.width = w * 2;
-    canvas.height = h * 2;
-    canvas.style.width = w;
-    canvas.style.height = h;
-    cx.scale(2, 2);
-
-    window.onresize = function() {
-        // DPI SCALAGE
-        canvas.width = w * 2;
-        canvas.height = h * 2;
-        canvas.style.width = w;
-        canvas.style.height = h;
-        cx.scale(2, 2);
-    }
-    
-    return setInterval(() => {
-        
-    }, 10)
 }

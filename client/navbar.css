@@ -1,0 +1,83 @@
+.navbar {
+    position: relative;
+    width: 100vw;
+    border-bottom: var(--accent-color) solid 1px;
+    min-height: 90px;
+    overflow: hidden;
+    padding-bottom: 0px;
+}
+.navbar .title {
+    font-family: Source;
+    font-weight: lighter;
+    font-size: 40px;
+    color: var(--accent-color-lighter);
+    display: inline-block;
+    line-height: 70px;
+    cursor: pointer;
+    user-select: none;
+}
+.navbar .hamburger {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    user-select: none;
+    cursor: pointer;
+}
+.navbar .hamburger .sheet#big {
+    position: absolute;
+    top: 10px;
+    border-bottom: 12px solid rgba(232, 173, 173, 0.836);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    height: 0;
+    width: 50px;
+}
+.navbar .hamburger .sheet#med {
+    position: absolute;
+    top: 20px;
+    left: 2px;
+    border-bottom: 12px solid rgba(216, 155, 155, 0.863);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    height: 0;
+    width: 46px;
+}
+.navbar .hamburger .sheet#sml {
+    position: absolute;
+    top: 30px;
+    left: 4px;
+    border-bottom: 12px solid rgba(203, 141, 141, 0.815);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    height: 0;
+    width: 42px;
+}
+
+.navbar .menu-items {
+    height: 0px;
+    display: none;
+    width: 100vw;
+    background-color: #efefef;
+    text-align: right;
+    color: var(--accent-color);
+    font-family: Source;
+    text-align: right;
+    color: var(--accent-color);
+    font-weight: bold;
+    padding-bottom: 0px;
+}
+
+.menu-items .item {
+    font-size: 16px;
+    margin: 8px;
+    margin-right: 30px;
+    cursor: pointer;
+    user-select: none;
+    transition: all var(--transition-time) ease-in;
+}
+.item:hover {
+    color: var(--accent-color-lighter);
+    margin-right: 35px;
+}

@@ -259,7 +259,7 @@ class DBUtil {
         } catch(err) {
             return {
                 success: false, 
-                error: err
+                error: err 
             }
         }
     }

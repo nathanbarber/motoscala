@@ -1,6 +1,4 @@
 const express = require("express"),
-    pg = require("pg"),
-    multer = require("multer"),
     contentful = require("contentful"),
     bp = require("body-parser"),
     crypto = require("crypto"),
@@ -10,28 +8,14 @@ const express = require("express"),
     dist = `${__dirname}/dist`,
     PORT = 8080;
 
+var db = new DBUtil();
+
 var app = express()
         .use(express.static(dist))
         .use("/jquery", express.static(`${__dirname}/node_modules/jquery/dist/jquery.js`))
         .use(bp.json())
-        .use(bp.urlencoded({extended: false})),
-    upload = multer({
-        storage: multer.diskStorage({
-            destination: (req, file, cb) => {
-                let type = req.params.type,
-                    user = req.params.username, 
-                    path = `${__dirname}/fstore/${user}`
-                fs.mkdirSync(path);
-                cb(null, path);
-            },
-            filename: (req, file, cb) => {
-                let logid = req.params.logid,
-                    assetid = req.params.assetid,
-                    ext = file.originalname.split(".").pop();
-                cb(null, `${logid}-${assetid}.${ext}`);
-            }
-        })
-    });
+        .use(bp.urlencoded({extended: false}))
+        .use(sv(`${__dirname}/icon.png`));
 
 app.listen(PORT, () => {
     console.log("App running on " + PORT);
@@ -40,46 +24,46 @@ app.listen(PORT, () => {
 app.post("/login", async (req, res) => {
     // Check for password match
     if(!req.body.username || !req.body.password) {
-        return res.send(403, {
+        return res.status(403).send({
             "message": "Invalid request"
         });
     }
-    if(await userExists(req.body.username) == false || await userValidate(req.body.username, req.body.password) == false) {
-        return res.send(403, {
+    if(await db.userExists(req.body.username) == false || (await db.userValidate(req.body.username, req.body.password)).validated == false) {
+        return res.status(403).send({
             "message": "Incorrect username / password."
         })
     }
     // Password match - generate token
-    var tokenbuffer = await generateAccessToken(req.body.username);
-    if(tokenbuffer == false) {
-        return res.send(500, {
+    var tokenbuffer = await db.generateAccessToken(req.body.username);
+    if(tokenbuffer.success == false) {
+        return res.status(500).send({
             "message": "Error generating tokenbuffer"
         })
     }
-    return res.send(200, {
+    return res.status(200).send({
         "message": "Login successful!",
-        "token": tokenbuffer
+        "token": tokenbuffer.token
     });
 });
 
 app.post("/signup", async (req, res) => {
     if(!req.body.username || !req.body.password || !req.body.email) {
-        return res.send(403, {
+        return res.status(403).send({
             "message": "Invalid request"
         });
     }
-    if(await userExists(req.body.username) == true) {
-        return res.send(403, {
+    if(await db.userExists(req.body.username) == true) {
+        return res.status(403).send({
             "message": "Username already registered"
         })
     }
-    var result = await userCreate(req.body.username, req.body.password, req.body.email);
-    if(result == false) {
-        return res.send(500, {
+    var result = await db.userCreate(req.body.username, req.body.password, req.body.email);
+    if(result.success == false) {
+        return res.status(500).send({
             "message": "Failed to create a new user"
         })
     }
-    return res.send(200, {
+    return res.status(200).send({
         "message": "New user created!"
     })
 });
@@ -93,13 +77,13 @@ app.post("/make-log", async (req, res) => {
         ], true, res);
     if(reqv != true) return;
 
-    var result = logCreate(req.body.username, req.body.logname, req.body.description);
-    if(result == false) {
-        return res.send(500, {
+    var result = await db.logCreate(req.body.username, req.body.logname, req.body.description);
+    if(result.success == false) {
+        return res.status(500).send({
             "message": "Failed to create a new log"
         })
     }
-    return res.send(200, {
+    return res.status(200).send({
         "message": "Created a new log!"
     })
 });
@@ -111,13 +95,13 @@ app.get("/list-log", async (req, res) => {
         ], true, res);
     if(reqv != true) return;
 
-    var result = await logList(req.query.username);
-    if(result == false) {
-        return res.send(500, {
+    var result = await db.logList(req.query.username);
+    if(result.success == false) {
+        return res.status(500).send({
             "message": "Error listing logs"
         })
     }
-    return res.send(200, {
+    return res.status(200).send({
         "message": "Successfully got list!",
         "logs": result.logs
     });
@@ -131,20 +115,20 @@ app.get("/dump-log", async (req, res) => {
     ], true, res);
     if(reqv != true) return;
 
-    var userLogs = await logList(req.query.username);
+    var userLogs = await db.logList(req.query.username);
     if(userLogs == false || !(userLogs.logs.includes(req.query.logid))) {
-        return res.send(404, {
+        return res.status(404).send({
             "message": "That log does not exist!"
         });
     }
     
-    var result = await logDump(req.query.logid);
-    if(result == false) {
-        return res.send(500, {
+    var result = await db.logDump(req.query.logid);
+    if(result.success == false) {
+        return res.status(500).send({
             "message": "Log dump error"
         })
     }
-    return res.send(200, {
+    return res.status(200).send({
         "message": "Log dump success!",
         "log": result.log
     })
@@ -158,37 +142,72 @@ app.post("/delete-log", async (req, res) => {
     ], true, res);
     if(reqv != true) return;
 
-    var result = await logDelete(req.query.username, req.query.logid);
-    if(result) return res.send(200, {
+    var result = await db.logDelete(req.query.username, req.query.logid);
+    if(result.success) return res.status(200).send({
         "message": "Log deleted successfully!"
     });
-    return res.send(500, {
+    return res.status(500).send({
         "message": "Log delete failed"
     })
 })
 
-app.post("/log-make-entry", (req, res) => {
-    
+app.post("/make-entry", async (req, res) => {
+    var reqv = await requestValidate([
+        [req.body.username, "string"],
+        [req.body.token, "string"],
+        [req.body.logid, "string"],
+        [req.body.etitle, "string"],
+        [req.body.etext, "string"]
+    ], true, res);
+    if(reqv != true) return;
+
+    var assetHREF = '',
+        result = await db.entryCreate(req.body.logid, req.body.etitle, req.body.etext, assetHREF);
+    if(result.success) return res.status(200).send({
+        "message": "Entry created successfully!"
+    });
+    return res.status(500).send({
+        "message": "Entry create failed"
+    })
 });
 
-app.post("/log-make-asset", upload.single(), (req, res) => {
+app.post("/update-entry", async (req, res) => {
+    var reqv = await requestValidate([
+        [req.body.username, "string"],
+        [req.body.token, "string"],
+        [req.body.logid, "string"],
+        [req.body.entryid, "string"],
+        [req.body.etitle, "string"],
+        [req.body.etext, "string"]
+    ], true, res);
+    if(reqv != true) return;
 
+    var assetHREF = '',
+        result = await db.entryUpdate(req.body.logid, req.body.entryid, req.body.etitle, req.body.etext, assetHREF);
+    if(result.success) return res.status(200).send({
+        "message": "Entry updated successfully!"
+    });
+    return res.status(500).send({
+        "message": "Entry update failed"
+    });
 });
 
-app.post("/log-update-entry", (req, res) => {
+app.post("/delete-entry", async (req, res) => {
+    var reqv = await requestValidate([
+        [req.body.username, "string"],
+        [req.body.token, "string"],
+        [req.body.logid, "string"],
+        [req.body.entryid, "string"]
+    ], true, res);
+    if(reqv != true) return;
 
-});
-
-app.post("/log-update-asset", upload.single(), (req, res) => {
-
-});
-
-app.post("/log-delete-entry", (req, res) => {
-
-});
-
-app.post("/log-delete-asset", (req, res) => {
-
+    var result = await db.entryDelete(req.body.logid, req.body.entryid);
+    if(result.success) return res.status(200).send({
+        "message": "Entry deleted successfully!"
+    });
+    return res.status(500).send({
+        "message": "Entry delete failed"
+    });
 });
 
 // REQUEST HELPER METHODS
@@ -201,24 +220,24 @@ async function requestValidate(
     for(let i of exists) {
         if(Array.isArray(i)) {
             if(i[0] == undefined || i[0] == null || typeof i[0] != i[1]) {
-                if(res) return res.send(403, {
+                if(res) return res.status(403).send({
                     "message": "Invalid request"
                 });
                 return false;
             }
         } else {
             if(i == undefined || i == null) {
-                if(res) return res.send(403, {
+                if(res) return res.status(403).send({
                     "message": "Invalid request"
                 });
                 return false;
             }
         }
     }
-    if(await userExists(req.body.username) == false || await userValidate(req.body.username, req.body.password) == false) {
-        if(res) return res.send(403, {
-            "message": "Incorrect username / password."
-        })
+    if(validate && (await db.userExists(exists[0][0]) == false || (await db.verifyAccessToken(exists[0][0], exists[0][1])).validated == false)) {
+        if(res) return res.status(403).send({
+            "message": "You are not authorized to perform this request"
+        });
         return false;
     }
     return true;

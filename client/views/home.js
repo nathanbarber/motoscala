@@ -1,7 +1,7 @@
-app.controller("home", function($scope) {
-    $(document).ready(() => {
-        var interval = animation();
-    });
+app.controller("home", function($scope, $location) {
+    $scope.toSignUp = function() {
+        $location.path("/signup");
+    }
 })
 
 function animation() {
