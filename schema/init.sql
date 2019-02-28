@@ -1,6 +1,7 @@
 USE motoscala;
 DROP TABLE IF EXISTS users; 
 DROP TABLE IF EXISTS logs; 
+DROP TABLE IF EXISTS hash;
 CREATE TABLE users (
     username varchar(20) NOT NULL,
     email varchar(40),
@@ -14,4 +15,8 @@ CREATE TABLE logs (
     id varchar(100) NOT NULL,
     log JSON,
     PRIMARY KEY (id)
+); 
+CREATE TABLE hash (
+    username varchar(20) primary key,
+    hash varchar(100) default ''
 ); 

@@ -14,6 +14,17 @@ describe("DBUtil class methods functioning", () => {
         assert.equal(await db.userExists("foo"), true);
         db.d();
     });
+    it("can create a random signup hash and store it in the hash table, then validate it", async () => {
+        let db = new DBUtil(),
+            hashRes = await db.createHash("foo");
+        assert.equal(hashRes.success, true);
+        assert.equal(typeof hashRes.hash, "string");
+        assert.equal(hashRes.hash.length, 100);
+        let validateHashRes = await db.validateHash("foo", hashRes.hash);
+        assert.equal(validateHashRes.success, true);
+        assert.equal(validateHashRes.validated, true);
+        db.d();
+    });
     it("can verify user password", async () => {
         let db = new DBUtil();
         assert.equal(JSON.stringify(await db.userValidate("foo", "bar")), JSON.stringify({success: true, validated: true}));
@@ -144,6 +155,30 @@ describe("DBUtil class methods error correctly", () => {
         assert.equal(typeof createEntry.error, "object");
         assert.equal(typeof updateEntry.error, "object");
         assert.equal(typeof deleteEntry.error, "object");
+        db.d();
+    });
+    it("handles creating a duplicate user in the hash table", async () => {
+        let db = new DBUtil(),
+            hashRequest = await db.createHash("foo"),
+            secondaryHashRequest = await db.createHash("foo");
+        assert.equal(secondaryHashRequest.success, false);
+        assert.equal(typeof secondaryHashRequest.error, "object");
+        db.d();
+    }); 
+    it("handles attempted validation of an imaginary user hash", async () => {
+        let db = new DBUtil(),
+            validateImaginaryHash = await db.validateHash("foo_imaginary", "foo_imaginary_hash");
+        assert.equal(validateImaginaryHash.success, false);
+        assert.equal(validateImaginaryHash.validated, false);
+        assert.equal(typeof validateImaginaryHash.error, "object");
+        db.d();
+    });
+    it("handles failed hash verification", async () => {
+        let db = new DBUtil(),
+            hashRes = await db.createHash("foo"),
+            failValidateHash = await db.validateHash("foo", "definitely not the right hash");
+        assert.equal(failValidateHash.success, true);
+        assert.equal(failValidateHash.validated, false);
         db.d();
     });
 });

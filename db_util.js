@@ -62,6 +62,38 @@ class DBUtil {
             }
         }
     }
+
+    async createHash(username) {
+        try {
+            var hash = crypto.randomBytes(50).toString("hex"),
+                res = await this.q(`insert into hash(username, hash) values ('${username}', '${hash}')`);
+            return {
+                success: (res.affectedRows == 1),
+                hash: hash
+            }
+        } catch(err) {
+            return {
+                success: false,
+                error: err
+            }
+        }
+    }
+
+    async validateHash(username, token) {
+        try {
+            var hashRecord = await this.q(`select hash from hash where username='${username}'`);
+            return {
+                success: true,
+                validated: (token == hashRecord[0].hash)
+            }
+        } catch(err) {
+            return {
+                success: false,
+                validated: false,
+                error: err
+            }
+        }
+    }
     
     async userValidate(username, password, email) {
         try {

@@ -4,6 +4,8 @@ const express = require("express"),
     crypto = require("crypto"),
     fs = require("fs"),
     sv = require("serve-favicon"),
+    nm = require("nodemailer"),
+    createValiateHTML = require("./supporting/email-validate"),
     { DBUtil } = require("./db_util"),
     dist = `${__dirname}/dist`,
     PORT = 8080;
@@ -55,17 +57,49 @@ app.post("/signup", async (req, res) => {
     if(await db.userExists(req.body.username) == true) {
         return res.status(403).send({
             "message": "Username already registered"
-        })
+        });
     }
-    var result = await db.userCreate(req.body.username, req.body.password, req.body.email);
+    var result = await db.userCreate(req.body.username, req.body.password, req.body.email, req.body.phone || '');
     if(result.success == false) {
         return res.status(500).send({
             "message": "Failed to create a new user"
-        })
+        });
     }
-    return res.status(200).send({
-        "message": "New user created!"
-    })
+    // Create hash and redirect user to "Validate Email" page
+    let hashResult = await db.createHash(req.body.username);
+    if(hashResult.success == false || typeof hashResult.hash != "string") {
+        return res.status(500).send({
+            "message": "Failed to create a validation hash"
+        });
+    }
+    try {
+        let validationTransport = nm.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'service.motoscala@gmail.com',
+                    pass: 's9ns*72nslPP'
+                }
+            }),
+            message = {
+                from: "Motoscala Service <service.motoscala@gmail.com>",
+                to: req.body.email,
+                subject: "Please validate your email.",
+                html: createValiateHTML(req.body.username, hashResult.hash)
+            }
+        result = await validationTransport.sendMail(message);
+        console.log(result);
+        return res.redirect("/send-validate.html");
+    } catch(err) {
+        return res.status(500).send({
+            "message": "Problem sending validation message. Retry recommended"
+        });
+    }
+});
+
+app.get("/validate-email", async(req, res) => {
+    let username = req.query.username,
+        token = req.query.token;
+    res.status(200).send(`Hello ${username} with token ${token}`);
 });
 
 app.post("/make-log", async (req, res) => {
