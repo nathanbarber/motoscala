@@ -87,8 +87,9 @@ app.post("/signup", async (req, res) => {
                 html: createValiateHTML(req.body.username, hashResult.hash)
             }
         result = await validationTransport.sendMail(message);
-        console.log(result);
-        return res.redirect("/send-validate.html");
+        return res.send({
+            success: true
+        });
     } catch(err) {
         return res.status(500).send({
             "message": "Problem sending validation message. Retry recommended"
@@ -99,7 +100,13 @@ app.post("/signup", async (req, res) => {
 app.get("/validate-email", async(req, res) => {
     let username = req.query.username,
         token = req.query.token;
-    res.status(200).send(`Hello ${username} with token ${token}`);
+    var result = await db.validateHash(username, token);
+    if(result.error || !result.success || !result.validated) {
+        return res.send(500, {
+            "message": "Server error, could not validate."
+        });
+    }
+    return res.redirect(301, "/");
 });
 
 app.post("/make-log", async (req, res) => {

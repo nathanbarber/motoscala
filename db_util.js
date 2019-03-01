@@ -81,10 +81,14 @@ class DBUtil {
 
     async validateHash(username, token) {
         try {
-            var hashRecord = await this.q(`select hash from hash where username='${username}'`);
+            var hashRecord = await this.q(`select hash from hash where username='${username}'`),
+                userValidated;
+            if(token == hashRecord[0].hash) {
+                userValidated = await this.q(`update users set validated=1 where username='${username}'`);
+            }
             return {
                 success: true,
-                validated: (token == hashRecord[0].hash)
+                validated: (token == hashRecord[0].hash && userValidated.affectedRows == 1)
             }
         } catch(err) {
             return {

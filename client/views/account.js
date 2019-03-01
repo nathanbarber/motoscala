@@ -20,8 +20,12 @@ app.controller("account", function($scope, $location) {
                 method: "POST",
                 data: verified,
                 success: (data) => {
-                    $location.path("/validate");
-                    $scope.$apply();
+                    if(data.success) {
+                        $location.path("/validate");
+                        $scope.$apply();
+                    } else {
+                        console.log("Signup err")
+                    }
                 },
                 error: (err) => {
                     console.log(err);

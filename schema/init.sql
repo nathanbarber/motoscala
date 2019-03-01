@@ -9,6 +9,7 @@ CREATE TABLE users (
     telephone varchar(10),
     token varchar(100),
     logs JSON,
+    validated BOOLEAN default 0,
     PRIMARY KEY (username)
 ); 
 CREATE TABLE logs (
