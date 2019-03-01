@@ -16,6 +16,11 @@
     cursor: pointer;
     user-select: none;
 }
+.navbar .title .version {
+    font-size: 16px;
+    font-weight: lighter;
+    color: var(--font-color-1);
+}
 .navbar .hamburger {
     width: 50px;
     height: 50px;

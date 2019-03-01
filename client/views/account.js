@@ -15,26 +15,62 @@ app.controller("account", function($scope, $location) {
                 },
                 verified = verify(cred);
             console.log(verified);
-            $.ajax({
-                url: "/signup",
-                method: "POST",
-                data: verified,
-                success: (data) => {
-                    if(data.success) {
-                        $location.path("/validate");
-                        $scope.$apply();
-                    } else {
-                        console.log("Signup err")
+            if(Array.isArray(verified) && verified[0] == false) {
+                // Do something
+            } else {
+                $.ajax({
+                    url: "/signup",
+                    method: "POST",
+                    data: verified,
+                    success: (data) => {
+                        if(data.success) {
+                            $location.path("/validate");
+                            $scope.$apply();
+                        } else {
+                            console.log("Signup err")
+                        }
+                    },
+                    error: (err) => {
+                        console.log(err);
                     }
-                },
-                error: (err) => {
-                    console.log(err);
-                }
-            });
+                });
+            }
         });
     }
     $scope.doLogin = function() {
-
+        $(document).ready(function() {
+            let $user = $("input.username"),
+                $pass = $("input.password");
+            var cred = {
+                    username: $user.val(),
+                    password: $pass.val()
+                },
+                verified = verify(cred);
+            console.log(verified);
+            if(Array.isArray(verified) && verified[0] == false) {
+                // Do something
+            } else {
+                window.credentials = verified;
+                $.ajax({
+                    url: "/login",
+                    method: "POST",
+                    data: verified,
+                    success: (data) => {
+                        if(data.token) {
+                            window.serverAccessToken = encodeURIComponent(data.token);
+                            $location.path("/bench");
+                            $scope.$apply();
+                        } else {
+                            console.log("Login err");
+                        }
+                    },
+                    error: (err) => {
+                        console.log(err);
+                    }
+                });
+            }
+            
+        }); 
     }
     $scope.storeToken = function() {
 

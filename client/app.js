@@ -17,6 +17,10 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: "views/account-validate.html",
             controller: "account"
         })
+        .when("/bench", {
+            templateUrl: "views/bench.html",
+            controller: "bench"
+        })
         .otherwise({
             redirectTo: "/"
         });
@@ -24,4 +28,6 @@ app.config(function($routeProvider, $locationProvider) {
 
 app.run(function($rootScope) {
     $rootScope.notLoggedIn = true;
+    $rootScope.logList = [];
+    $rootScope.logs = [];
 });

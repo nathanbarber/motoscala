@@ -1,0 +1,11 @@
+.welcome {
+    margin-top: 40px;
+    font-size: 30px;
+    color: var(--font-color-1);
+    font-family: source;
+    font-weight: lighter;
+    margin-bottom: 40px;
+}
+.welcome span {
+    color: var(--accent-color);
+}

@@ -131,7 +131,10 @@ class DBUtil {
     async verifyAccessToken(username, token) {
         try {
             var res = await this.q(`select token from users where username='${username}'`),
-                validated = (res[0].token == token);
+                validated = (res[0].token == decodeURIComponent(token));
+                console.log(res[0].token);
+                console.log(token);
+                console.log(validated);
             return {
                 validated: validated,
                 success: true

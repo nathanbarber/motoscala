@@ -275,7 +275,9 @@ async function requestValidate(
             }
         }
     }
-    if(validate && (await db.userExists(exists[0][0]) == false || (await db.verifyAccessToken(exists[0][0], exists[0][1])).validated == false)) {
+    console.log(await db.userExists(exists[0][0]));
+    console.log(await db.verifyAccessToken(exists[0][0], exists[1][0]));
+    if(validate && ((await db.userExists(exists[0][0])) == false || (await db.verifyAccessToken(exists[0][0], exists[1][0])).validated == false)) {
         if(res) return res.status(403).send({
             "message": "You are not authorized to perform this request"
         });
