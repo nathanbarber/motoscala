@@ -101,11 +101,14 @@ class DBUtil {
     
     async userValidate(username, password, email) {
         try {
-            var res = await this.q(`select password from users where username='${username}'`),
-                validated = res[0].password == password;
+            var dbPassword = await this.q(`select password from users where username='${username}'`),
+                dbEmailValidated = await this.q(`select validated from users where username='${username}'`),
+                emailValidated = dbEmailValidated[0].validated == 1,
+                passwordValidated = dbPassword[0].password == password;
+            console.log(dbEmailValidated);
             return {
                 success: true,
-                validated: validated
+                validated: (emailValidated && passwordValidated)
             }
         } catch(err) {
             return {
