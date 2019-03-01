@@ -67,3 +67,7 @@
 .color-3 {
     color: var(--font-color-3);
 }
+
+.spacer {
+    margin-top: 40px;
+}

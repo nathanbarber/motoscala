@@ -13,6 +13,10 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: "views/account-login.html", 
             controller: "account"
         })
+        .when("/validate", {
+            templateUrl: "views/account-validate.html",
+            controller: "account"
+        })
         .otherwise({
             redirectTo: "/"
         });

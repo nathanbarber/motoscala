@@ -37,8 +37,8 @@ gulp.task("lib", () => {
         .pipe(gulp.dest(prod + "/lib"))
 })
 
-gulp.task("indexhtml", () => {
-    return gulp.src(build + "/index.html")
+gulp.task("html", () => {
+    return gulp.src(build + "/*.html")
         .pipe(gulp.dest(prod))
 })
 
@@ -47,7 +47,7 @@ gulp.task("viewshtml", () => {
         .pipe(gulp.dest(prod + "/views"))
 })
 
-gulp.task("build", ["clean", "css", "appjs", "combinejs", "lib", "indexhtml", "viewshtml"])
+gulp.task("build", ["clean", "css", "appjs", "combinejs", "lib", "html", "viewshtml"])
 
 gulp.task("nodemon", () => {
     gulp.run("build");

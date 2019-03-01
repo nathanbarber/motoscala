@@ -20,7 +20,8 @@ app.controller("account", function($scope, $location) {
                 method: "POST",
                 data: verified,
                 success: (data) => {
-                    console.log(data)
+                    $location.path("/validate");
+                    $scope.$apply();
                 },
                 error: (err) => {
                     console.log(err);
