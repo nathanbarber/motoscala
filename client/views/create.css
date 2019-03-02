@@ -1,0 +1,116 @@
+.create .title {
+    margin-top: 40px;
+    color: var(--font-color-1);
+    font-size: 30px;
+    font-family: source;
+    margin-bottom: 30px;
+}
+
+.create .editor {
+    border-radius: 5px;
+    background-color: #efefef;
+    text-align: left;
+    padding: 30px;
+    font-family: source;
+    color: var(--font-color-3);
+    position: relative;
+    margin-bottom: 100px;
+}
+
+.editor .instruction {
+    font-size: 16px;
+    line-height: 20px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-style: italic;
+    margin-left: 5px;
+    color: var(--font-color-1);
+}
+
+.editor input {
+    font-size: 20px;
+    outline: none;
+    border: none;
+    background-color: #efefef;
+    color: var(--font-color-3);
+    border-left: 1px solid var(--accent-color);
+    font-family: source;
+    padding: 8px;
+    padding-left: 10px;
+    padding-right: 5px;
+    transition: all var(--transition-time) ease-in;
+}
+.editor input:focus {
+    background-color: #ddd;
+}
+
+.editor textarea {
+    font-size: 16px;
+    line-height: 20px;
+    outline: none;
+    border: none;
+    background-color: #efefef;
+    color: var(--font-color-3);
+    border-left: 1px solid var(--accent-color);
+    font-family: source;
+    padding: 8px;
+    padding-left: 10px;
+    padding-right: 5px;
+    width: 50%;
+    resize: none;
+    transition: all var(--transition-time) ease-in;
+}
+.editor textarea.log-tags {
+    color: var(--font-color-1);
+}
+.editor textarea:focus {
+    background-color: #ddd;
+}
+
+.editor .create-entry-wrapper {
+    margin-top: 30px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.editor .create-entry {
+    padding: 8px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: var(--accent-color);
+    border-radius: 5px;
+    box-shadow: 0px 8px 10px var(--shadow-color-1);
+    color: white;
+    transition: all var(--transition-time) ease-in;
+    user-select: none;
+    cursor: pointer;
+}
+.editor .create-entry:hover {
+    background-color: var(--accent-color-lighter);
+    box-shadow: 0px 3px 10px var(--shadow-color-1);
+}
+
+.editor .entry-file-upload {
+    display: none;
+}
+
+.editor .choose-image-wrapper {
+    padding: 8px;
+    padding-left: 10px;
+    padding-right: 5px;
+    border-left: 1px solid var(--accent-color);
+    font-family: source;
+}
+.editor label.entry-file-upload {
+    display: block;
+    font-size: 20px;
+    color: var(--accent-color-lighter);
+    cursor: pointer;
+    user-select: none;
+    padding: 0px;
+    margin: 0px;
+    transition: all var(--transition-time) ease-in;
+}
+.editor label.entry-file-upload:hover {
+    color: var(--accent-color);
+}

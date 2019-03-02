@@ -15,6 +15,7 @@
     line-height: 70px;
     cursor: pointer;
     user-select: none;
+    white-space: nowrap;
 }
 .navbar .title .version {
     font-size: 16px;

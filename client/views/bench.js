@@ -1,6 +1,6 @@
 app.controller("bench", function($scope, $location) {
     if(!window.serverAccessToken) {
-        return $location.path("/login");
+        // return $location.path("/login");
     }
     $scope.logsLoaded = false;
     $scope.username = window.credentials.username;
@@ -46,4 +46,16 @@ app.controller("bench", function($scope, $location) {
         console.log($scope.logs);
         $scope.$apply();
     })();
+    $scope.createLog = () => {
+        $location.path("/create");
+    }
+    $scope.editLog = () => {
+        $location.path("/edit");
+    }
+    $scope.deleteLog = () => {
+
+    }
+    $scope.viewLog = () => {
+        
+    }
 });

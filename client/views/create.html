@@ -1,0 +1,29 @@
+<div class="container-fluid section create">
+    <div class="row">
+        <div class="col-12 text-center title">{{logName}}</div>
+        <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-lg-2 offset-xl-3 editor">
+            <div class="instruction">Name your project:</div>
+            <input type="text" class="log-name" spellcheck="false" ng-model="logName">
+            <div class="instruction">Give it a description:</div>
+            <textarea type="text" class="log-description" spellcheck="false" ng-model="logDescription"></textarea>
+            <div class="instruction">Add comma separated tags for your project:</div>
+            <textarea type="text" class="log-tags" spellcheck="false" ng-model="logTags"></textarea>
+            <br>
+            <div class="create-entry-wrapper">
+                <span class="create-entry">Add an entry</span>
+            </div>
+            <!-- Dynamic -->
+            <div class="entry-create">
+                <div class="instruction">Name your entry:</div>
+                <input type="text" class="entry-name" spellcheck="false">
+                <div class="instruction">Describe what you've done:</div>
+                <textarea name="entry-text" type="text" class="entry-text" spellcheck="false"></textarea>
+                <div class="instruction">Add media:</div>
+                <input type="file" name="entry-file-upload" class="entry-file-upload" id="upload-media">
+                <div class="choose-image-wrapper">
+                    <label class="entry-file-upload" for="upload-media">Choose your image</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

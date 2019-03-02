@@ -21,6 +21,10 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: "views/bench.html",
             controller: "bench"
         })
+        .when("/create", {
+            templateUrl: "views/create.html",
+            controller: "create"
+        })
         .otherwise({
             redirectTo: "/"
         });
