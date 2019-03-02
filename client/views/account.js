@@ -57,7 +57,7 @@ app.controller("account", function($scope, $location) {
                     data: verified,
                     success: (data) => {
                         if(data.token) {
-                            window.serverAccessToken = encodeURIComponent(data.token);
+                            window.serverAccessToken = data.token;
                             $location.path("/bench");
                             $scope.$apply();
                         } else {

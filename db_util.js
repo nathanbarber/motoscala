@@ -65,7 +65,7 @@ class DBUtil {
 
     async createHash(username) {
         try {
-            var hash = crypto.randomBytes(50).toString("hex"),
+            var hash = crypto.randomBytes(32).toString("hex"),
                 res = await this.q(`insert into hash(username, hash) values ('${username}', '${hash}')`);
             return {
                 success: (res.affectedRows == 1),
@@ -105,7 +105,6 @@ class DBUtil {
                 dbEmailValidated = await this.q(`select validated from users where username='${username}'`),
                 emailValidated = dbEmailValidated[0].validated == 1,
                 passwordValidated = dbPassword[0].password == password;
-            console.log(dbEmailValidated);
             return {
                 success: true,
                 validated: (emailValidated && passwordValidated)
@@ -120,7 +119,7 @@ class DBUtil {
     }
     
     async generateAccessToken(username) {
-        let tokenbuffer = crypto.randomBytes(64).toString("base64");
+        let tokenbuffer = crypto.randomBytes(32).toString("hex");
         var res = await this.q(`update users set token='${tokenbuffer}' where username='${username}'`);
         return {
             success: res.changedRows == 1,
@@ -131,10 +130,7 @@ class DBUtil {
     async verifyAccessToken(username, token) {
         try {
             var res = await this.q(`select token from users where username='${username}'`),
-                validated = (res[0].token == decodeURIComponent(token));
-                console.log(res[0].token);
-                console.log(token);
-                console.log(validated);
+                validated = (res[0].token == token);
             return {
                 validated: validated,
                 success: true
@@ -155,7 +151,7 @@ class DBUtil {
                     "description": description,
                     "entries": []
                 }),
-                id = "log" + crypto.randomBytes(64).toString("base64"),
+                id = "log" + crypto.randomBytes(32).toString("hex"),
                 userLogIds = await this.q(`select logs from users where username='${username}'`),
                 userLogArray = JSON.parse(userLogIds[0].logs);
             userLogArray.push(id);
@@ -236,8 +232,9 @@ class DBUtil {
 
     async entryCreate(logid, title, text, href) {
         try {
-            var entry = {
-                    "id": "entry" + crypto.randomBytes(64).toString("base64"),
+            var eid = "entry" + crypto.randomBytes(32).toString("hex"),
+                entry = {
+                    "id": eid,
                     "title": title,
                     "text": text,
                     "href": href || null,
@@ -248,7 +245,9 @@ class DBUtil {
             parsedLog.entries.push(entry);
             var stringifiedLog = JSON.stringify(parsedLog),
                 updateLog = await this.q(`update logs set log='${stringifiedLog}' where id='${logid}'`);
-            return updateLog.changedRows == 1;
+            return {
+                success: updateLog.changedRows == 1
+            }
         } catch(err) {
             return {
                 success: false,

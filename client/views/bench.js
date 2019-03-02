@@ -43,7 +43,8 @@ app.controller("bench", function($scope, $location) {
             $scope.logs.push(await $scope.getLog(logid));
         }
         $scope.logsLoaded = true;
-        console.log($scope.logs);
+        console.log("Loaded logs", $scope.logs);
+        window.logs = $scope.logs;
         $scope.$apply();
     })();
     $scope.createLog = () => {

@@ -2,7 +2,7 @@ const express = require("express"),
     contentful = require("contentful"),
     bp = require("body-parser"),
     crypto = require("crypto"),
-    fs = require("fs"),
+    fs = require("fs-extra"),
     sv = require("serve-favicon"),
     nm = require("nodemailer"),
     createValiateHTML = require("./supporting/email-validate"),
@@ -15,8 +15,16 @@ var db = new DBUtil();
 var app = express()
         .use(express.static(dist))
         .use("/jquery", express.static(`${__dirname}/node_modules/jquery/dist/jquery.js`))
-        .use(bp.json())
-        .use(bp.urlencoded({extended: false}))
+        .use("/media", express.static(`${__dirname}/fstore`))
+        .use(bp.json({limit: '10mb'}))
+        .use(bp.urlencoded({limit: '10mb', extended: false}))
+        .use((req, res, next) => {
+            if(req.body.logname) req.body.logname = encodify(req.body.logname);
+            if(req.body.description) req.body.description = encodify(req.body.description);
+            if(req.body.etitle) req.body.etitle = encodify(req.body.etitle);
+            if(req.body.etext) req.body.etext = encodify(req.body.etext);
+            next();
+        })
         .use(sv(`${__dirname}/icon.png`));
 
 app.listen(PORT, () => {
@@ -125,7 +133,8 @@ app.post("/make-log", async (req, res) => {
         })
     }
     return res.status(200).send({
-        "message": "Created a new log!"
+        "message": "Created a new log!",
+        "logid": result.logid
     })
 });
 
@@ -157,13 +166,16 @@ app.get("/dump-log", async (req, res) => {
     if(reqv != true) return;
 
     var userLogs = await db.logList(req.query.username);
-    if(userLogs == false || !(userLogs.logs.includes(req.query.logid))) {
+    console.log(userLogs);
+    console.log(req.query.logid);
+    let decodedLogid = req.query.logid;
+    if(userLogs == false || !(userLogs.logs.includes(decodedLogid))) {
         return res.status(404).send({
             "message": "That log does not exist!"
         });
     }
     
-    var result = await db.logDump(req.query.logid);
+    var result = await db.logDump(decodedLogid);
     if(result.success == false) {
         return res.status(500).send({
             "message": "Log dump error"
@@ -171,7 +183,7 @@ app.get("/dump-log", async (req, res) => {
     }
     return res.status(200).send({
         "message": "Log dump success!",
-        "log": result.log
+        "log": decodifyLog(result.log)
     })
 });
 
@@ -190,7 +202,20 @@ app.post("/delete-log", async (req, res) => {
     return res.status(500).send({
         "message": "Log delete failed"
     })
-})
+});
+
+app.get("/get-media", (req, res) => {
+    try {
+        let media = fs.readFileSync(`${__dirname}/fstore${req.query.path}`, "utf-8");
+        console.log(media);
+        res.send(media);
+    } catch(err) {
+        res.send({
+            "message": "Could not get media",
+            "error": err
+        });
+    }
+});
 
 app.post("/make-entry", async (req, res) => {
     var reqv = await requestValidate([
@@ -201,9 +226,23 @@ app.post("/make-entry", async (req, res) => {
         [req.body.etext, "string"]
     ], true, res);
     if(reqv != true) return;
-
-    var assetHREF = '',
-        result = await db.entryCreate(req.body.logid, req.body.etitle, req.body.etext, assetHREF);
+    // Store image in fstore
+    var mediaHref = '';
+    if(req.body.media && typeof req.body.media == "string") {
+        let mediaDir = `${__dirname}/fstore/${req.body.username}`;
+        mediaHref = `${mediaDir}/${crypto.randomBytes(30).toString("hex")}`
+        try {
+            fs.mkdirsSync(mediaDir);
+            fs.writeFileSync(mediaHref, req.body.media);
+        } catch(err) {
+            console.log(err);
+            return res.status(500).send({
+                "message": "Could not write file",
+                "error": err
+            });
+        }
+    }
+    var result = await db.entryCreate(req.body.logid, req.body.etitle, req.body.etext, mediaHref.split("fstore")[1]);
     if(result.success) return res.status(200).send({
         "message": "Entry created successfully!"
     });
@@ -275,8 +314,6 @@ async function requestValidate(
             }
         }
     }
-    console.log(await db.userExists(exists[0][0]));
-    console.log(await db.verifyAccessToken(exists[0][0], exists[1][0]));
     if(validate && ((await db.userExists(exists[0][0])) == false || (await db.verifyAccessToken(exists[0][0], exists[1][0])).validated == false)) {
         if(res) return res.status(403).send({
             "message": "You are not authorized to perform this request"
@@ -284,4 +321,28 @@ async function requestValidate(
         return false;
     }
     return true;
+}
+
+function encodify(entity) {
+    return Buffer.from(entity).toString("hex");
+}
+
+function decodify(entity) {
+    return Buffer.from(entity, "hex").toString();
+}
+
+function decodifyLog(log) {
+    try {
+        decodifiedLog = JSON.parse(JSON.stringify(log))
+        decodifiedLog.name = decodify(decodifiedLog.name);
+        decodifiedLog.description = decodify(decodifiedLog.description);
+        for(let entry of decodifiedLog.entries) {
+            entry.title = decodify(entry.title);
+            entry.text = decodify(entry.text);
+        }
+        return decodifiedLog;
+    } catch(err) {
+        console.log(err);
+        return log;
+    }
 }

@@ -9,19 +9,31 @@
             <div class="instruction">Add comma separated tags for your project:</div>
             <textarea type="text" class="log-tags" spellcheck="false" ng-model="logTags"></textarea>
             <br>
-            <div class="create-entry-wrapper">
-                <span class="create-entry">Add an entry</span>
+            <div class="editor-button-wrapper">
+                <span class="editor-button create-entry" ng-click="entryCreate()">Add your first entry</span>
             </div>
             <!-- Dynamic -->
-            <div class="entry-create">
+            <div class="entry-create" ng-show="entryCreateVisible">
                 <div class="instruction">Name your entry:</div>
-                <input type="text" class="entry-name" spellcheck="false">
+                <input type="text" class="entry-name" spellcheck="false" ng-model="entryTitle">
                 <div class="instruction">Describe what you've done:</div>
-                <textarea name="entry-text" type="text" class="entry-text" spellcheck="false"></textarea>
+                <textarea name="entry-text" type="text" class="entry-text" spellcheck="false" ng-model="entryText"></textarea>
                 <div class="instruction">Add media:</div>
-                <input type="file" name="entry-file-upload" class="entry-file-upload" id="upload-media">
+                <input 
+                    type="file" 
+                    name="entry-file-upload" 
+                    class="entry-file-upload" 
+                    id="upload-media" 
+                    ng-model="entryMedia"
+                    accept="image/x-png,image/gif,image/jpeg"
+                    onchange="angular.element(this).scope().updatedMedia(this)">
                 <div class="choose-image-wrapper">
                     <label class="entry-file-upload" for="upload-media">Choose your image</label>
+                    <img class="media-display" ng-src="{{media}}" ng-show="hasMedia">
+                </div>
+
+                <div class="editor-button-wrapper">
+                    <span class="editor-button create-project" ng-click="initProject()">Create project</span>
                 </div>
             </div>
         </div>

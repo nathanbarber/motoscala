@@ -39,6 +39,7 @@
     padding-left: 10px;
     padding-right: 5px;
     transition: all var(--transition-time) ease-in;
+    width: 100%;
 }
 .editor input:focus {
     background-color: #ddd;
@@ -59,6 +60,7 @@
     width: 50%;
     resize: none;
     transition: all var(--transition-time) ease-in;
+    width: 100%;
 }
 .editor textarea.log-tags {
     color: var(--font-color-1);
@@ -67,13 +69,13 @@
     background-color: #ddd;
 }
 
-.editor .create-entry-wrapper {
+.editor .editor-button-wrapper {
     margin-top: 30px;
     margin-bottom: 40px;
     text-align: center;
 }
 
-.editor .create-entry {
+.editor .editor-button {
     padding: 8px;
     padding-left: 20px;
     padding-right: 20px;
@@ -85,7 +87,7 @@
     user-select: none;
     cursor: pointer;
 }
-.editor .create-entry:hover {
+.editor .editor-button:hover {
     background-color: var(--accent-color-lighter);
     box-shadow: 0px 3px 10px var(--shadow-color-1);
 }
@@ -113,4 +115,10 @@
 }
 .editor label.entry-file-upload:hover {
     color: var(--accent-color);
+}
+
+.editor .media-display {
+    width: 40%;
+    border-radius: 5px;
+    margin-top: 20px;
 }
