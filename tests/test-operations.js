@@ -1,11 +1,15 @@
-const { DBUtil } = require("../db_util")
+const { DBUtil } = require("../src/db/db_util")
 const assert = require("assert");
+const del = require("del");
 
 describe("DBUtil class methods functioning", () => {
     it("wipes database", async () => {
         let db = new DBUtil();
         await db.dbReset();
         db.d();
+    });
+    it("cleans out the filestorage directory", () => {
+        del([`${__dirname}/../fstore`, `!${__dirname}/..`]);
     });
     it("can create and find users", async () => {
         let db = new DBUtil();
