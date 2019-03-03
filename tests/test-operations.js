@@ -19,7 +19,7 @@ describe("DBUtil class methods functioning", () => {
             hashRes = await db.createHash("foo");
         assert.equal(hashRes.success, true);
         assert.equal(typeof hashRes.hash, "string");
-        assert.equal(hashRes.hash.length, 100);
+        assert.equal(hashRes.hash.length, 64);
         let validateHashRes = await db.validateHash("foo", hashRes.hash);
         assert.equal(validateHashRes.success, true);
         assert.equal(validateHashRes.validated, true);
@@ -67,7 +67,7 @@ describe("DBUtil class methods functioning", () => {
         assert.equal(typeof logCreate.logid, "string");
 
         let entryCreate = await db.entryCreate(logCreate.logid, "foo-entry", "entry-for-foo", null);
-        assert.equal(entryCreate, true);
+        assert.equal(JSON.stringify(entryCreate), JSON.stringify({success: true}));
 
         let log = await db.logDump(logCreate.logid);
         assert.equal(log.error, undefined);
