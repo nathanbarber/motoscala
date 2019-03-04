@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
     // Store image in fstore
     var mediaHref = '';
     if(req.body.media && typeof req.body.media == "string") {
-        let mediaDir = `${__dirname}/fstore/${req.body.username}`;
+        let mediaDir = `${__dirname}/../../fstore/${req.body.username}`;
         mediaHref = `${mediaDir}/${crypto.randomBytes(30).toString("hex")}`
         try {
             fs.mkdirsSync(mediaDir);

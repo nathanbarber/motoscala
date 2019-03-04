@@ -30,8 +30,10 @@
                 </div>
                 <div class="row menu-items">
                     <div class="item" ng-click="toHome()">About Us</div>
-                    <div class="item" ng-click="toLogin()">Log In</div>
-                    <div class="item" ng-show="notLoggedIn" ng-click="toSignup()">Sign Up</div>
+                    <div class="item" ng-show="loggedIn" ng-click="toBench()">Bench ({{username}})</div>
+                    <div class="item" ng-show="loggedIn" ng-click="logOut()">Log Out</div>
+                    <div class="item" ng-show="!loggedIn" ng-click="toLogin()">Log In</div>
+                    <div class="item" ng-show="!loggedIn" ng-click="toSignup()">Sign Up</div>
                 </div>
             </div>
             <div id="view" ng-view></div>

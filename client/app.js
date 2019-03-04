@@ -31,7 +31,17 @@ app.config(function($routeProvider, $locationProvider) {
 });
 
 app.run(function($rootScope) {
-    $rootScope.notLoggedIn = true;
-    $rootScope.logList = [];
-    $rootScope.logs = [];
+    $rootScope.username = sessionStorage.getItem("motoscala-username") || window.credentials.username;
+    $rootScope.token = sessionStorage.getItem("motoscala-token") || window.serverAccessToken;
+    if($rootScope.token && $rootScope.username) {
+        window.credentials = {
+            username: $rootScope.username
+        };
+        window.serverAccessToken = $rootScope.token;
+        $rootScope.loggedIn = true;
+    } else {
+        $rootScope.loggedIn = false;
+    }
+        $rootScope.logList = [];
+        $rootScope.logs = [];
 });

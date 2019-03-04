@@ -51,13 +51,16 @@ app.controller("account", function($scope, $location) {
                 // Do something
             } else {
                 window.credentials = verified;
+                sessionStorage.setItem("motoscala-username", window.credentials.username);
                 $.ajax({
                     url: "/login",
                     method: "POST",
                     data: verified,
                     success: (data) => {
+                        console.log("logged in");
                         if(data.token) {
                             window.serverAccessToken = data.token;
+                            sessionStorage.setItem("motoscala-token", data.token);
                             $location.path("/bench");
                             $scope.$apply();
                         } else {

@@ -1,6 +1,7 @@
 app.controller("home", function($scope, $location) {
-    $scope.toSignUp = function() {
-        $location.path("/signup");
+    $scope.getStarted = function() {
+        if($scope.loggedIn) return $location.path("/bench");
+        return $location.path("/signup");
     }
 })
 

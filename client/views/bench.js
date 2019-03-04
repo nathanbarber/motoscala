@@ -1,6 +1,6 @@
 app.controller("bench", function($scope, $location) {
-    if(!window.serverAccessToken) {
-        // return $location.path("/login");
+    if($scope.loggedIn == false) {
+        return $location.path("/login");
     }
     $scope.logsLoaded = false;
     $scope.username = window.credentials.username;
@@ -36,11 +36,22 @@ app.controller("bench", function($scope, $location) {
             })
         });
     }
+    $scope.loadMedia = async (href) => {
+        console.log(href);
+        let media = await (new Promise(resolve => {
+            $.get("/media" + href, (data) => {
+                resolve(data)
+            });
+        }));
+        return media;
+    }
     $scope.loadLogs = (async () => {
         $scope.logList = await $scope.getLogList();
         $scope.logs = [];
         for(let logid of $scope.logList) {
-            $scope.logs.push(await $scope.getLog(logid));
+            let log = await $scope.getLog(logid);
+            if(log.entries[0].href) log.entries[0].media = await $scope.loadMedia(log.entries[0].href);
+            $scope.logs.push(log);
         }
         $scope.logsLoaded = true;
         console.log("Loaded logs", $scope.logs);
@@ -50,13 +61,12 @@ app.controller("bench", function($scope, $location) {
     $scope.createLog = () => {
         $location.path("/create");
     }
-    $scope.editLog = () => {
-        $location.path("/edit");
-    }
-    $scope.deleteLog = () => {
 
-    }
-    $scope.viewLog = () => {
-        
+    // Display functions
+
+    $scope.limit = (str, limit) => {
+        let limited = str.substring(0, limit);
+        if(limited == str) return str;
+        return limited + "...";
     }
 });

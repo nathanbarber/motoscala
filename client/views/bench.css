@@ -26,6 +26,9 @@
     margin-top: 40px;
     opacity: 1;
 }
+.arrows {
+    margin-bottom: 40px;
+}
 
 .button {
     background-color: var(--accent-color);
@@ -45,4 +48,58 @@
 .button:hover {
     background-color: var(--accent-color-lighter);
     box-shadow: 0px 3px 10px #ddd;
+}
+
+.log-list-item {
+    padding: 20px;
+    background-color: #efefef;
+    border-radius: 5px;
+    position: relative;
+    max-height: 140px;
+    font-family: source;
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 150ms ease-in;
+    margin-bottom: 20px;
+}
+.log-list-item:hover {
+    border: 1px solid var(--accent-color-lighter);
+}
+.log-list-item img {
+    max-width: 20%;
+    border-radius: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.log-list-item .name {
+    color: var(--accent-color);
+    font-weight: lighter;
+    font-size: 25px;
+    width: 35%;
+    display: inline-block;
+    margin-left: 5%;
+    vertical-align: middle;
+}
+.log-list-item .description {
+    width: 35%;
+    display: inline-block;
+    color: var(--font-color-1);
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+    .log-list-item .description {
+        display: none;
+    }
+    .log-list-item .name {
+        max-width: 40%;
+        margin-left: 5%;
+    }
+    .log-list-item img {
+        max-width: 50%;
+        max-height: 100px;
+    }
 }

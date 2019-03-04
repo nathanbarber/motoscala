@@ -11,6 +11,11 @@ app.controller("navbar", function($scope, $location) {
         $location.path("/login");
         hardShut();
     }
+    $scope.toBench = function() {
+        $location.path("/bench");
+        hardShut();
+    }
+    
     $(document).ready(function() {
         $(".hamburger").mousedown(function() {
             if($(".menu-items").css("display") == "none") {
@@ -21,6 +26,10 @@ app.controller("navbar", function($scope, $location) {
         });
     });
 });
+
+function getMenuHeight() {
+    return `${(parseInt($(".item").css("margin")) * 2 + $(".item").height() - 4) * ($(".item").length - $(".item.ng-hide").length)}px`
+}
     
 
 function extendo(time) {
@@ -40,7 +49,7 @@ function extendo(time) {
     // Open menu
     $(".menu-items").css("display", "block");
     $(".menu-items").animate({
-        height: `${(parseInt($(".item").css("margin")) * 2 + $(".item").height() - 4) * $(".item").length}px`
+        height: getMenuHeight()
     }, 130);
 }
 

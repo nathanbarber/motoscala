@@ -1,11 +1,17 @@
 <div class="container-fluid section bench">
     <div class="row">
         <div class="col-12 text-center welcome">Welcome back <span>{{username}}</span>!</div>
-        <div class="col-12 text-center">
+        <div class="col-12 text-center arrows">
             <img class="arrow" src="lib/arrow.png">
             <img class="arrow two" src="lib/arrow.png">
             <img class="arrow three" src="lib/arrow.png">            
         </div>
+    </div>
+    <!-- Load log list -->
+    <div class="col-12 col-10-sm col-md-8 col-xl-6 offset-1-sm offset-md-2 offset-xl-3 log-list-item" ng-repeat="log in logs track by $index">
+        <img ng-src="{{log.entries[0].media}}">
+        <div class="name">{{limit(log.name, 20)}}</div>
+        <div class="description">{{limit(log.description, 80)}}</div>
     </div>
     <div class="row" ng-show="logsLoaded">
         <div class="col-10 col-sm-6 col-md-4 col-xl-2 offset-1 offset-sm-3 offset-md-4 offset-xl-5 text-center">
