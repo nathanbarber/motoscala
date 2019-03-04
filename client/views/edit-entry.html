@@ -1,0 +1,30 @@
+<div class="container-fluid section create">
+    <div class="row">
+        <div class="col-12 text-center title">"{{focused.name}}" - <i>{{focused.entries[entryIndex()].title}}</i></div>
+        <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-lg-2 offset-xl-3 editor">
+            <div class="entry-create">
+                <div class="instruction">Name:</div>
+                <input type="text" class="entry-name" spellcheck="false" ng-model="focused.entries[entryIndex()].title">
+                <div class="instruction">Description:</div>
+                <textarea name="entry-text" type="text" class="entry-text" spellcheck="false" ng-model="focused.entries[entryIndex()].text"></textarea>
+                <div class="instruction">Media:</div>
+                <input 
+                    type="file" 
+                    name="entry-file-upload" 
+                    class="entry-file-upload" 
+                    id="upload-media" 
+                    ng-model="entryMedia"
+                    accept="image/x-png,image/gif,image/jpeg"
+                    onchange="angular.element(this).scope().updatedMedia(this)">
+                <div class="choose-image-wrapper">
+                    <label class="entry-file-upload" for="upload-media">Choose your image</label>
+                    <img class="media-display" ng-src="{{media}}" ng-show="hasMedia">
+                </div>
+
+                <div class="editor-button-wrapper">
+                    <span class="editor-button create-project" ng-click="updateEntry()">Update entry</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

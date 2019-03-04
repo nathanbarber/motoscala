@@ -1,0 +1,92 @@
+.project {
+    font-family: source;
+}
+.project .name {
+    margin-top: 75px;
+    margin-bottom: 50px;
+    color: var(--font-color-1);
+    font-size: 25px;
+}
+.project .description {
+    margin-bottom: 100px;
+    color: var(--accent-color-lighter);
+    font-size: 16px;
+    line-height: 24px;
+    padding: 10px;
+    border-left: 1px solid var(--accent-color);
+    background-color: #efefef;
+}
+.project .action-bar {
+    margin-left: 20px;
+}
+.project .action-icon {
+    margin-right: 10px;
+    height: 45px;
+    cursor: pointer;
+    user-select: none;
+    transition: all var(--transition-time) ease-in;
+    border-bottom: 1px solid transparent;
+    padding: 10px;
+}
+.project .action-icon:hover {
+    border-bottom: 1px solid var(--accent-color);
+}
+
+.project .entry {
+    position: relative;
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 10px;
+    transition: all var(--transition-time) ease-in;
+    border-radius: 5px;
+    background-color: #efefef;
+}
+.project .entry img {
+    border-radius: 5px;
+    max-width: 100%;
+    margin-bottom: 15px;
+    cursor: pointer;
+    user-select: none;
+}
+.project .entry .title {
+    color: var(--accent-color);
+    font-size: 20px;
+    line-height: 25px;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+.project .entry .text {
+    color: var(--font-color-1);
+    font-size: 16px;
+    line-height: 24px;
+    background-color: #ddd;
+    border-radius: 5px;
+    /* border-left: 1px solid var(--accent-color); */
+    padding: 10px;
+}
+.project .entry .action-bar {
+    margin: 0px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+.project .entry .action-icon {
+    border-radius: 0px;
+    margin: 0px;
+}
+/* .project .entry span {
+    background-color: var(--shadow-color-1);
+    border-radius: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 16px;
+    color: var(--accent-color);
+    margin: 25px;
+    cursor: pointer;
+    user-select: none;
+    transition: all var(--transition-time) ease-in;
+}
+.project .entry span:hover {
+    background-color: #ccc;
+} */

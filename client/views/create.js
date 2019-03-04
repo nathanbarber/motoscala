@@ -78,4 +78,14 @@ app.controller("create", function($scope, $location) {
         $location.path("/bench");
         $scope.$apply();
     }
+
+    // Create entry 
+
+    $scope.logid = window.location.href.split("/").pop();
+    $scope.initEntry = async () => {
+        let createEntryRes = (await $scope.createEntry($scope.logid));
+        console.log(createEntryRes);
+        $location.path(`/project/${$scope.logid}`);
+        $scope.$apply();
+    }
 });

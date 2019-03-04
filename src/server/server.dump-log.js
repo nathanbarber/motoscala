@@ -11,8 +11,6 @@ module.exports = async (req, res) => {
     if(reqv != true) return;
 
     var userLogs = await db.logList(req.query.username);
-    console.log(userLogs);
-    console.log(req.query.logid);
     let decodedLogid = req.query.logid;
     if(userLogs == false || !(userLogs.logs.includes(decodedLogid))) {
         return res.status(404).send({

@@ -1,4 +1,4 @@
-app.controller("account", function($scope, $location) {
+app.controller("account", function($scope, $location, $rootScope) {
     $scope.doSignUp = function() {
         $(document).ready(function() {
             let $user = $("input.username"),
@@ -61,8 +61,13 @@ app.controller("account", function($scope, $location) {
                         if(data.token) {
                             window.serverAccessToken = data.token;
                             sessionStorage.setItem("motoscala-token", data.token);
+                            $rootScope.username = window.credentials.username;
+                            $rootScope.token = window.serverAccessToken;
+                            $rootScope.loggedIn = true;
+                            console.log($rootScope.loggedIn);
+                            $rootScope.$apply();
                             $location.path("/bench");
-                            $scope.$apply();
+                            $rootScope.$apply();
                         } else {
                             console.log("Login err");
                         }

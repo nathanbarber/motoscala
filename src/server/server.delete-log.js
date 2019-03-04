@@ -4,13 +4,14 @@ const helper = require("./helper"),
 
 module.exports = async (req, res) => {
     var reqv = await helper.requestValidate([
-        [req.query.username, "string"],
-        [req.query.token, "string"],
-        [req.query.logid, "string"]
+        [req.body.username, "string"],
+        [req.body.token, "string"],
+        [req.body.logid, "string"]
     ], true, res);
     if(reqv != true) return;
 
-    var result = await db.logDelete(req.query.username, req.query.logid);
+    var result = await db.logDelete(req.body.username, req.body.logid);
+    console.log(result);
     if(result.success) return res.status(200).send({
         "message": "Log deleted successfully!"
     });

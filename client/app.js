@@ -21,9 +21,25 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: "views/bench.html",
             controller: "bench"
         })
+        .when("/project/:logid", {
+            templateUrl: "views/project.html",
+            controller: "project"
+        })
         .when("/create", {
             templateUrl: "views/create.html",
             controller: "create"
+        })
+        .when("/create-entry/:logid", {
+            templateUrl: "views/create-entry.html",
+            controller: "create"
+        })
+        .when("/edit/log/:logid", {
+            templateUrl: "views/edit-log.html",
+            controller: "edit"
+        })
+        .when("/edit/entry/:entryid", {
+            templateUrl: "views/edit-entry.html",
+            controller: "edit"
         })
         .otherwise({
             redirectTo: "/"
@@ -31,7 +47,7 @@ app.config(function($routeProvider, $locationProvider) {
 });
 
 app.run(function($rootScope) {
-    $rootScope.username = sessionStorage.getItem("motoscala-username") || window.credentials.username;
+    $rootScope.username = sessionStorage.getItem("motoscala-username") || (window.credentials != undefined ? window.credentials.username : undefined);
     $rootScope.token = sessionStorage.getItem("motoscala-token") || window.serverAccessToken;
     if($rootScope.token && $rootScope.username) {
         window.credentials = {
@@ -42,6 +58,7 @@ app.run(function($rootScope) {
     } else {
         $rootScope.loggedIn = false;
     }
-        $rootScope.logList = [];
-        $rootScope.logs = [];
+    $rootScope.logList = [];
+    $rootScope.logs = [];
+    $rootScope.focused = null;
 });

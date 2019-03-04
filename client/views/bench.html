@@ -8,7 +8,10 @@
         </div>
     </div>
     <!-- Load log list -->
-    <div class="col-12 col-10-sm col-md-8 col-xl-6 offset-1-sm offset-md-2 offset-xl-3 log-list-item" ng-repeat="log in logs track by $index">
+    <div 
+        class="col-12 col-10-sm col-md-8 col-xl-6 offset-1-sm offset-md-2 offset-xl-3 log-list-item" 
+        ng-repeat="log in logs track by $index"
+        ng-click="toProject(log.id)">
         <img ng-src="{{log.entries[0].media}}">
         <div class="name">{{limit(log.name, 20)}}</div>
         <div class="description">{{limit(log.description, 80)}}</div>

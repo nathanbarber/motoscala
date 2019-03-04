@@ -13,6 +13,7 @@ const express = require("express"),
         listLog: require("./src/server/server.list-log"),
         dumpLog: require("./src/server/server.dump-log"),
         deleteLog: require("./src/server/server.delete-log"),
+        updateLog: require("./src/server/server.update-log"),
         getMedia: require("./src/server/server.get-media"),
         makeEntry: require("./src/server/server.make-entry"),
         updateEntry: require("./src/server/server.update-entry"),
@@ -50,6 +51,7 @@ app.post("/make-log", server.makeLog);
 app.get("/list-log", server.listLog);
 app.get("/dump-log", server.dumpLog);
 app.post("/delete-log", server.deleteLog);
+app.post("/update-log", server.updateLog);
 app.get("/get-media", server.getMedia);
 app.post("/make-entry", server.makeEntry);
 app.post("/update-entry", server.updateEntry);

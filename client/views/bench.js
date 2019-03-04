@@ -51,6 +51,7 @@ app.controller("bench", function($scope, $location) {
         for(let logid of $scope.logList) {
             let log = await $scope.getLog(logid);
             if(log.entries[0].href) log.entries[0].media = await $scope.loadMedia(log.entries[0].href);
+            log.id = logid
             $scope.logs.push(log);
         }
         $scope.logsLoaded = true;
@@ -68,5 +69,8 @@ app.controller("bench", function($scope, $location) {
         let limited = str.substring(0, limit);
         if(limited == str) return str;
         return limited + "...";
+    }
+    $scope.toProject = (id) => {
+        $location.path(`/project/${id}`);
     }
 });

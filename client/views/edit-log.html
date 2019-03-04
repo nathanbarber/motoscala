@@ -1,0 +1,17 @@
+<div class="container-fluid section create">
+    <div class="row">
+        <div class="col-12 text-center title">Edit details for - "{{focused.name}}"</i></div>
+        <div class="col-10 col-lg-8 col-xl-6 offset-1 offset-lg-2 offset-xl-3 editor">
+            <div class="entry-create">
+                <div class="instruction">Name:</div>
+                <input type="text" class="entry-name" spellcheck="false" ng-model="focused.name">
+                <div class="instruction">Description:</div>
+                <textarea name="entry-text" type="text" class="entry-text" spellcheck="false" ng-model="focused.description"></textarea>
+
+                <div class="editor-button-wrapper">
+                    <span class="editor-button create-project" ng-click="updateLog()">Update Project</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

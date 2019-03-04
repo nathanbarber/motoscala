@@ -220,7 +220,7 @@ class DBUtil {
                 logDeleteRes = await this.q(`delete from logs where id='${logid}'`);
 
             return {
-                success: (logDeleteRes.affectedRows == 1 && updateUserLogArray.changedRows == 1)
+                success: (logDeleteRes.affectedRows == 1 && updateUserLogArray.affectedRows == 1)
             }
         } catch(err) {
             return {
@@ -229,6 +229,28 @@ class DBUtil {
             }
         }
     }
+
+    async logUpdate(logid, username, name, description) {
+        try {
+            let logRes = await this.q(`select log from logs where id='${logid}'`),
+                log = JSON.parse(logRes[0].log);
+            log.name = name;
+            log.description = description;
+            let updatedLog = JSON.stringify(log);
+            console.log(log, updatedLog);
+            let logInsertRes = await this.q(`update logs set log='${updatedLog}' where id='${logid}'`);
+            return {
+                success: true,
+                updated: logInsertRes.affectedRows == 1
+            }
+        } catch(err) {
+            return {
+                success: false,
+                error: err
+            }
+        }
+    }
+
 
     async entryCreate(logid, title, text, href) {
         try {
@@ -269,7 +291,9 @@ class DBUtil {
             parsedLog.entries = updatedEntries;
             var stringifiedLog = JSON.stringify(parsedLog);
             var updateLog = await this.q(`update logs set log='${stringifiedLog}' where id='${logid}'`);
-            return updateLog.changedRows == 1;
+            return {
+                success: updateLog.changedRows == 1
+            }
         } catch(err) {
             return {
                 success: false,
@@ -296,7 +320,10 @@ class DBUtil {
             parsedLog.entries = updatedEntries;
             var stringifiedLog = JSON.stringify(parsedLog);
             var updateLog = await this.q(`update logs set log='${stringifiedLog}' where id='${logid}'`);
-            return updateLog.changedRows == 1;
+            return {
+                success: true,
+                changed: updateLog.changedRows == 1
+            }
         } catch(err) {
             return {
                 success: false, 
