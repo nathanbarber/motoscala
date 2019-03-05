@@ -32,6 +32,7 @@ app.controller("account", function($scope, $location, $rootScope) {
                     },
                     error: (err) => {
                         console.log(err);
+                        $scope.showError(err.responseText);
                     }
                 });
             }
@@ -69,19 +70,17 @@ app.controller("account", function($scope, $location, $rootScope) {
                             $location.path("/bench");
                             $rootScope.$apply();
                         } else {
-                            console.log("Login err");
+                            $scope.showErr("Login attempt unsuccessful")
                         }
                     },
                     error: (err) => {
                         console.log(err);
+                        $scope.showError(err.responseText);
                     }
                 });
             }
             
         }); 
-    }
-    $scope.storeToken = function() {
-
     }
 });
 

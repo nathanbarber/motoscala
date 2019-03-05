@@ -13,6 +13,7 @@ app.controller("project", function($scope, $location, $rootScope) {
                     },
                     error: err => {
                         console.log(err);
+                        $scope.showError(err.responseText);
                         reject(err);
                     }
                 });
@@ -23,9 +24,17 @@ app.controller("project", function($scope, $location, $rootScope) {
         });
     };
     $scope.loadMedia = (href) => {
-        return new Promise(resolve => {
-            $.get("/media" + href, (data) => {
-                resolve(data)
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "/media" + href, 
+                method: "GET",
+                success: data => {
+                    resolve(data)
+                },
+                error: err => {
+                    $scope.showError("Could not load image");
+                    reject(err);
+                }
             });
         });
     };
@@ -33,7 +42,12 @@ app.controller("project", function($scope, $location, $rootScope) {
         $scope.log = await $scope.getLog($scope.logid);
         for(let entry of $scope.log.entries) {
             if(entry.href) {
-                try { entry.media = await $scope.loadMedia(entry.href) } catch(err) { console.log(err) }
+                try { 
+                    entry.media = await $scope.loadMedia(entry.href) 
+                } catch(err) { 
+                    console.log(err);
+                    $scope.showError("Could not load entry image");
+                }
             }
         }
         $scope.loaded = true;
@@ -86,6 +100,7 @@ app.controller("project", function($scope, $location, $rootScope) {
                 },
                 error: err => {
                     console.log(err);
+                    $scope.showError(err.responseText);
                     reject(err);
                 }
             });
@@ -109,6 +124,7 @@ app.controller("project", function($scope, $location, $rootScope) {
                 },
                 error: err => {
                     console.log(err);
+                    $scope.showError(err.responseText);
                     reject(err);
                 }
             })

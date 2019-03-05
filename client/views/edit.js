@@ -23,13 +23,23 @@ app.controller("edit", function($scope, $location, $rootScope) {
             var reader = new FileReader();
             reader.readAsDataURL(url);
             reader.onload = () => { resolve(reader.result) };
-            reader.onerror = error => { reject(error) };
+            reader.onerror = error => { 
+                $scope.showError("Cannot read image")
+            };
         });
     }
     $scope.loadMedia = (href) => {
-        return new Promise(resolve => {
-            $.get("/media" + href, (data) => {
-                resolve(data)
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "/media" + href, 
+                method: "GET",
+                success: data => {
+                    resolve(data)
+                },
+                error: err => {
+                    $scope.showError("Could not load image");
+                    reject(err);
+                }
             });
         });
     };
@@ -79,6 +89,7 @@ app.controller("edit", function($scope, $location, $rootScope) {
                 },
                 error: err => {
                     console.log(err);
+                    $scope.showError(err.responseText);
                 }
             })
         });
@@ -108,6 +119,7 @@ app.controller("edit", function($scope, $location, $rootScope) {
                 },
                 error: err => {
                     console.log(err);
+                    $scope.showError(err.responseText);
                 }
             })
         });

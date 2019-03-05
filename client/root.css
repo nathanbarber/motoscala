@@ -92,3 +92,19 @@
 .spacer {
     margin-top: 40px;
 }
+
+.error-message {
+    background-color: var(--accent-color);
+    color: var(--font-color-2);
+    font-size: 16px;
+    line-height: 24px;
+    padding: 10px;
+    display: none;
+    user-select: none;
+    cursor: pointer;
+    transition: all var(--transition-time) ease-in;
+    font-family: "Helvetica Neue"
+}
+.error-message:hover {
+    background-color: var(--accent-color-lighter);
+}

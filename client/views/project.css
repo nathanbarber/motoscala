@@ -8,7 +8,6 @@
     font-size: 25px;
 }
 .project .description {
-    margin-bottom: 100px;
     color: var(--accent-color-lighter);
     font-size: 16px;
     line-height: 24px;
@@ -35,6 +34,7 @@
 .project .entry {
     position: relative;
     text-align: center;
+    margin-top: 100px;
     margin-bottom: 60px;
     padding: 10px;
     transition: all var(--transition-time) ease-in;

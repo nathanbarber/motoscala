@@ -15,6 +15,7 @@ app.controller("bench", function($scope, $location) {
                 },
                 error: (err) => {
                     console.log(err);
+                    $scope.showError(err.responseText);
                     reject(err);
                 }
             })
@@ -31,26 +32,39 @@ app.controller("bench", function($scope, $location) {
                 },
                 error: (err) => {
                     console.log(err);
+                    $scope.showError(err.responseText);
                     reject(err);
                 }
             })
         });
     }
-    $scope.loadMedia = async (href) => {
-        console.log(href);
-        let media = await (new Promise(resolve => {
-            $.get("/media" + href, (data) => {
-                resolve(data)
+    $scope.loadMedia = (href) => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: "/media" + href, 
+                method: "GET",
+                success: data => {
+                    resolve(data)
+                },
+                error: err => {
+                    $scope.showError("Could not load image");
+                    reject(err);
+                }
             });
-        }));
-        return media;
-    }
+        });
+    };
     $scope.loadLogs = (async () => {
         $scope.logList = await $scope.getLogList();
         $scope.logs = [];
         for(let logid of $scope.logList) {
             let log = await $scope.getLog(logid);
-            if(log.entries[0].href) log.entries[0].media = await $scope.loadMedia(log.entries[0].href);
+            if(log.entries[0] && log.entries[0].href) {
+                try {
+                    log.entries[0].media = await $scope.loadMedia(log.entries[0].href);
+                } catch(err) {
+                    $scope.showError("Could not load entry media");
+                }
+            }
             log.id = logid
             $scope.logs.push(log);
         }

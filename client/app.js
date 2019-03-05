@@ -61,4 +61,16 @@ app.run(function($rootScope) {
     $rootScope.logList = [];
     $rootScope.logs = [];
     $rootScope.focused = null;
+
+    // Error display
+
+    $rootScope.errorMessage = "";
+    $rootScope.showError = (message) => {
+        $(".error-message").css("display", "block");
+        $rootScope.errorMessage = message;
+    }
+    $rootScope.hideError = () => {
+        $(".error-message").css("display", "none");
+        $rootScope.errorMessage = "";
+    }
 });

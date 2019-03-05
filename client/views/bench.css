@@ -10,6 +10,10 @@
     color: var(--accent-color);
 }
 
+.bench .error-message {
+    margin-bottom: 50px;
+}
+
 .arrow {
     height: 50px;
     margin: 20px;

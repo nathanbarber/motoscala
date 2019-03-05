@@ -1,5 +1,6 @@
 const helper = require("./helper"),
     { DBUtil } = require("../db/db_util"),
+    fs = require("fs-extra"),
     db = new DBUtil();
 
 module.exports = async (req, res) => {
@@ -10,6 +11,20 @@ module.exports = async (req, res) => {
         [req.body.entryid, "string"]
     ], true, res);
     if(reqv != true) return;
+
+    var log = await db.logDump(req.body.logid);
+    for(let entry of log.log.entries) {
+        if(entry.id == req.body.entryid) {
+            if(typeof entry.href == "string") {
+                let delPath = `${__dirname}/../../fstore${entry.href}`;
+                try {
+                    fs.unlinkSync(delPath);
+                } catch(err) {
+                    console.log("Delete failed for ", delPath, err);
+                }
+            }
+        }
+    }
 
     var result = await db.entryDelete(req.body.logid, req.body.entryid);
     if(result.success) return res.status(200).send({

@@ -6,6 +6,10 @@
     margin-bottom: 30px;
 }
 
+.create .error-message {
+    margin-bottom: 50px;
+}
+
 .create .editor {
     border-radius: 5px;
     background-color: #efefef;

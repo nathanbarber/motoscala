@@ -15,7 +15,10 @@ app.controller("create", function($scope, $location) {
             var reader = new FileReader();
             reader.readAsDataURL(url);
             reader.onload = () => { resolve(reader.result) };
-            reader.onerror = error => { reject(error) };
+            reader.onerror = error => { 
+                $scope.showError("Cannot read image");
+                reject(error);
+            };
         });
     }
     $scope.updatedMedia = async (input) => {
@@ -44,6 +47,7 @@ app.controller("create", function($scope, $location) {
                 },
                 error: err => {
                     reject(err);
+                    $scope.showError(err.responseText);
                 }
             });
         });
@@ -67,6 +71,7 @@ app.controller("create", function($scope, $location) {
                 },
                 error: err => {
                     reject(err);
+                    $scope.showError(err.responseText);
                 }
             })
         }); 
