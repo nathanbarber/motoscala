@@ -29,6 +29,10 @@
     font-weight: bold;
 }
 
+body {
+    -webkit-overflow-scrolling: touch;
+}
+
 #app {
     width: 100vw;
     position: relative;

@@ -1,4 +1,7 @@
 app.controller("project", function($scope, $location, $rootScope) {
+    if($scope.loggedIn == false) {
+        $location.path("/login");
+    }
     $scope.logid = window.location.href.split("/").pop();
     $scope.loaded = false;
     $scope.getLog = logid => {
@@ -13,7 +16,7 @@ app.controller("project", function($scope, $location, $rootScope) {
                     },
                     error: err => {
                         console.log(err);
-                        $scope.showError(err.responseText);
+                        $scope.showError(err.responseJSON.message);
                         reject(err);
                     }
                 });
@@ -100,7 +103,7 @@ app.controller("project", function($scope, $location, $rootScope) {
                 },
                 error: err => {
                     console.log(err);
-                    $scope.showError(err.responseText);
+                    $scope.showError(err.responseJSON.message);
                     reject(err);
                 }
             });
@@ -124,7 +127,7 @@ app.controller("project", function($scope, $location, $rootScope) {
                 },
                 error: err => {
                     console.log(err);
-                    $scope.showError(err.responseText);
+                    $scope.showError(err.responseJSON.message);
                     reject(err);
                 }
             })

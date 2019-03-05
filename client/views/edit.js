@@ -1,4 +1,7 @@
 app.controller("edit", function($scope, $location, $rootScope) {
+    if($scope.loggedIn == false) {
+        $location.path("/login");
+    }
     $scope.ids = (() => {
         let href = window.location.href.split("/"),
             id = href.pop(),
@@ -89,7 +92,7 @@ app.controller("edit", function($scope, $location, $rootScope) {
                 },
                 error: err => {
                     console.log(err);
-                    $scope.showError(err.responseText);
+                    $scope.showError(err.responseJSON.message);
                 }
             })
         });
@@ -119,7 +122,7 @@ app.controller("edit", function($scope, $location, $rootScope) {
                 },
                 error: err => {
                     console.log(err);
-                    $scope.showError(err.responseText);
+                    $scope.showError(err.responseJSON.message);
                 }
             })
         });

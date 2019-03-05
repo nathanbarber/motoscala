@@ -17,6 +17,7 @@ app.controller("account", function($scope, $location, $rootScope) {
             console.log(verified);
             if(Array.isArray(verified) && verified[0] == false) {
                 // Do something
+                $scope.showError(verified[1]);
             } else {
                 $.ajax({
                     url: "/signup",
@@ -32,7 +33,7 @@ app.controller("account", function($scope, $location, $rootScope) {
                     },
                     error: (err) => {
                         console.log(err);
-                        $scope.showError(err.responseText);
+                        $scope.showError(err.responseJSON.message);
                     }
                 });
             }
@@ -70,12 +71,12 @@ app.controller("account", function($scope, $location, $rootScope) {
                             $location.path("/bench");
                             $rootScope.$apply();
                         } else {
-                            $scope.showErr("Login attempt unsuccessful")
+                            $scope.showError("Login attempt unsuccessful")
                         }
                     },
                     error: (err) => {
                         console.log(err);
-                        $scope.showError(err.responseText);
+                        $scope.showError(err.responseJSON.message);
                     }
                 });
             }

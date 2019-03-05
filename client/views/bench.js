@@ -15,7 +15,7 @@ app.controller("bench", function($scope, $location) {
                 },
                 error: (err) => {
                     console.log(err);
-                    $scope.showError(err.responseText);
+                    $scope.showError(err.responseJSON.message);
                     reject(err);
                 }
             })
@@ -32,7 +32,7 @@ app.controller("bench", function($scope, $location) {
                 },
                 error: (err) => {
                     console.log(err);
-                    $scope.showError(err.responseText);
+                    $scope.showError(err.responseJSON.message);
                     reject(err);
                 }
             })

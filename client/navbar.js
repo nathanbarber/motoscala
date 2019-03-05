@@ -1,4 +1,4 @@
-app.controller("navbar", function($scope, $location) {
+app.controller("navbar", function($scope, $location, $rootScope) {
     $scope.toHome = function() {
         $location.path("/");
         hardShut();
@@ -14,6 +14,20 @@ app.controller("navbar", function($scope, $location) {
     $scope.toBench = function() {
         $location.path("/bench");
         hardShut();
+    }
+    $scope.logOut = function() {
+        hardShut();
+        delete window.serverAccessToken;
+        delete window.credentials;
+        $rootScope.username = undefined;
+        $rootScope.token = undefined;
+        $rootScope.loggedIn = false;
+        $rootScope.logList = [];
+        $rootScope.logs = [];
+        $rootScope.focused = null;
+        sessionStorage.removeItem("motoscala-username");
+        sessionStorage.removeItem("motoscala-token");
+        $location.path("/");
     }
     
     $(document).ready(function() {

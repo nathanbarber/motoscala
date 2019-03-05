@@ -68,6 +68,7 @@ app.run(function($rootScope) {
     $rootScope.showError = (message) => {
         $(".error-message").css("display", "block");
         $rootScope.errorMessage = message;
+        $rootScope.$apply();
     }
     $rootScope.hideError = () => {
         $(".error-message").css("display", "none");

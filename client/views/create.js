@@ -1,4 +1,7 @@
 app.controller("create", function($scope, $location) {
+    if($scope.loggedIn == false) {
+        $location.path("/login");
+    }
     $scope.logName = "Ex. Rocket Couch";
     $scope.logDescription = "Airplanes? No, this isn't 1990. I introduce to you the flying fouton.";
     $scope.logTags = "comfy, spacious, speedy";
@@ -47,7 +50,7 @@ app.controller("create", function($scope, $location) {
                 },
                 error: err => {
                     reject(err);
-                    $scope.showError(err.responseText);
+                    $scope.showError(err.responseJSON.message);
                 }
             });
         });
@@ -71,7 +74,7 @@ app.controller("create", function($scope, $location) {
                 },
                 error: err => {
                     reject(err);
-                    $scope.showError(err.responseText);
+                    $scope.showError(err.responseJSON.message);
                 }
             })
         }); 
