@@ -1,4 +1,5 @@
 const { DBUtil } = require("../db/db_util"),
+    fs = require("fs-extra"),
     db = new DBUtil();
 
 module.exports = {
@@ -61,12 +62,20 @@ module.exports = {
                             font-family: 'Segoe UI', 'Avenir', Tahoma, Geneva, Verdana, sans-serif;
                             text-align: center;
                         }
+                        .img-container {
+                            text-align: center;
+                        }
+                        img {
+                            width: 150px;
+                            margin: 50px;
+                        }
                         .header {
                             margin-top: 40px;
                             width: 100%;
                             font-size: 20px;
                             color: #676767;
                             padding-bottom: 30px;
+                            font-family: 'New York', Georgia, Times, 'Times New Roman', serif;
                         }
                         .button-container {
                             width: 100%;
@@ -98,8 +107,9 @@ module.exports = {
                     </style>
                 </head>
                 <body>
+                    <div class="img-container"><img src="cid:928375109"></div>
                     <div class="header">Click below to validate your email.</div>
-                    <div class="button-container"><a class="button" href="http://localhost:8080/validate-email?username=${username}&token=${token}">Confirm</a></div>
+                    <div class="button-container"><a class="button" style="color: #efefef" href="http://localhost:8080/validate-email?username=${username}&token=${token}">Confirm</a></div>
                     <br>
                 </body>
             </html>`

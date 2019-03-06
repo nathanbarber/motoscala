@@ -7,7 +7,7 @@ app.controller("project", function($scope, $location, $rootScope) {
     $scope.getLog = logid => {
         return new Promise((resolve, reject) => {
             console.log("promise loaded");
-            if($scope.logid.includes("log") && $scope.logid.length == 67) {
+            if($scope.logid.substring(0, 3).includes("log") && $scope.logid.length == 67) {
                 $.ajax({
                     url: `/dump-log?username=${window.credentials.username}&logid=${logid}&token=${window.serverAccessToken}`, 
                     method: "GET",

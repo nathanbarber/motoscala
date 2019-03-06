@@ -43,7 +43,12 @@ module.exports = async (req, res) => {
                 from: "Motoscala Service <service.motoscala@gmail.com>",
                 to: req.body.email,
                 subject: "Please validate your email.",
-                html: helper.createValidateHTML(req.body.username, hashResult.hash)
+                html: helper.createValidateHTML(req.body.username, hashResult.hash),
+                attachments: [{
+                    filename: "icon.png",
+                    path: `${__dirname}/../../icon.png`,
+                    cid: "928375109"
+                }]
             }
         result = await validationTransport.sendMail(message);
         return res.send({
