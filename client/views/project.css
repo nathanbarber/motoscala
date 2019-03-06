@@ -24,7 +24,7 @@
     cursor: pointer;
     user-select: none;
     transition: all var(--transition-time) ease-in;
-    border-bottom: 1px solid transparent;
+    border: 1px solid transparent;
     padding: 10px;
 }
 .project .action-icon:hover {
