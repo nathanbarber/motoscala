@@ -21,6 +21,30 @@ app.controller("edit", function($scope, $location, $rootScope) {
             if($rootScope.focused.entries[entry].id == $scope.ids.id) return entry;
         }
     }
+    $scope.accessSliderInit = (() => {
+        if($rootScope.focused.public) {
+            $(".toggle").css("backgroundColor", "var(--accent-color");
+            $(".toggle").css("margin-left", $(".toggle").width());
+        }
+    })();
+    $scope.changeAccess = () => {
+        console.log("Called changeaccess");
+        if($rootScope.focused.public == false) {
+            $rootScope.focused.public = true;
+            $(".toggle").css("backgroundColor", "var(--accent-color");
+            $(".toggle").animate({
+                "marginLeft": $(".toggle").width()
+            }, 200);
+        } else {
+            $rootScope.focused.public = false;
+            $(".toggle").css("backgroundColor", "var(--accent-color-lighter");
+            $(".toggle").animate({
+                "marginLeft": "0px",
+                "backgroundColor": "var(--accent-color-lighter)"
+            }, 200);
+        }
+        console.log($rootScope.focused.public);
+    }
     $scope.readMedia = (url) => {
         return new Promise((resolve, reject) => {
             var reader = new FileReader();
@@ -103,7 +127,8 @@ app.controller("edit", function($scope, $location, $rootScope) {
             token: window.serverAccessToken,
             logid: $rootScope.focused.logid,
             logname: $rootScope.focused.name,
-            description: $rootScope.focused.description
+            description: $rootScope.focused.description,
+            public: $rootScope.focused.public
         };
         if($scope.updatedMedia == true) {
             updateBody.media = $scope.media;

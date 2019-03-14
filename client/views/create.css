@@ -30,6 +30,13 @@
     margin-left: 5px;
     color: var(--font-color-1);
 }
+.editor .instruction-support {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--font-color-3);
+    margin-bottom: 15px;
+    margin-left: 5px;
+}
 
 .editor input {
     font-size: 20px;
@@ -73,6 +80,25 @@
 }
 .editor textarea:focus {
     background-color: #ddd;
+}
+
+.editor .switch {
+    width: 150px;
+    height: 50px;
+    background-color: #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    position: relative;
+    text-align: left;
+    margin-left: 5px;
+    margin-bottom: 50px;
+    cursor: pointer;
+}
+.editor .switch .toggle {
+    height: 100%;
+    width: 50%;
+    border-radius: 5px;
+    background-color: var(--accent-color-lighter);
 }
 
 .editor .editor-button-wrapper {

@@ -11,11 +11,11 @@ module.exports = async (req, res) => {
         [req.body.logid, "string"],
         [req.body.logname, "string"],
         [req.body.description, "string"],
+        [JSON.parse(req.body.public), "boolean"]
     ], true, res);
     if(reqv != true) return;
 
-    var response = await db.logUpdate(req.body.logid, req.body.username, req.body.logname, req.body.description);
-    console.log(response);
+    var response = await db.logUpdate(req.body.logid, req.body.username, req.body.logname, req.body.description, req.body.public);
     if(response.success == true && response.updated == true) 
         return res.status(200).send({
             "message": "Successfully updated log"

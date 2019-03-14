@@ -8,7 +8,11 @@
                 <input type="text" class="entry-name" spellcheck="false" ng-model="focused.name">
                 <div class="instruction">Description:</div>
                 <textarea name="entry-text" type="text" class="entry-text" spellcheck="false" ng-model="focused.description"></textarea>
-
+                <div class="instruction">Make Public:</div>
+                <div class="instruction-support">When private, only you will be able to view your project.</div>
+                <div class="switch">
+                    <div class="toggle" ng-click="changeAccess()"></div>
+                </div>
                 <div class="editor-button-wrapper">
                     <span class="editor-button create-project" ng-click="updateLog()">Update Project</span>
                 </div>

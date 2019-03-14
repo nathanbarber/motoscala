@@ -149,7 +149,8 @@ class DBUtil {
             let log = JSON.stringify({
                     "name": logname,
                     "description": description,
-                    "entries": []
+                    "entries": [],
+                    "public": false
                 }),
                 id = "log" + crypto.randomBytes(32).toString("hex"),
                 userLogIds = await this.q(`select logs from users where username='${username}'`),
@@ -230,12 +231,13 @@ class DBUtil {
         }
     }
 
-    async logUpdate(logid, username, name, description) {
+    async logUpdate(logid, username, name, description, publicaccess) {
         try {
             let logRes = await this.q(`select log from logs where id='${logid}'`),
                 log = JSON.parse(logRes[0].log);
             log.name = name;
             log.description = description;
+            log.public = publicaccess;
             let updatedLog = JSON.stringify(log);
             console.log(log, updatedLog);
             let logInsertRes = await this.q(`update logs set log='${updatedLog}' where id='${logid}'`);
