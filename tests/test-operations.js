@@ -86,7 +86,7 @@ describe("DBUtil class methods functioning", () => {
         assert.equal(log.log.entries[0].href, undefined);
 
         let updateEntry = await db.entryUpdate(logCreate.logid, log.log.entries[0].id, "foo-entry-updated", "entry-for-foo-updated", "/href/added");
-        assert.equal(updateEntry, true);
+        assert.equal(updateEntry.success, true);
 
         log = await db.logDump(logCreate.logid),
         numEntries = log.log.entries.length;
@@ -102,7 +102,7 @@ describe("DBUtil class methods functioning", () => {
         assert.equal(log.log.entries[0].href, "/href/added");
 
         let deleteEntry = await db.entryDelete(logCreate.logid, log.log.entries[0].id);
-        assert.equal(deleteEntry, true);
+        assert.equal(deleteEntry.success, true);
 
         log = await db.logDump(logCreate.logid);
         assert.equal(log.log.entries.length, numEntries - 1);

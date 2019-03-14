@@ -46,7 +46,7 @@ app.config(function($routeProvider, $locationProvider) {
         });
 });
 
-app.run(function($rootScope) {
+app.run(function($rootScope, $location) {
     $rootScope.username = sessionStorage.getItem("motoscala-username") || (window.credentials != undefined ? window.credentials.username : undefined);
     $rootScope.token = sessionStorage.getItem("motoscala-token") || window.serverAccessToken;
     if($rootScope.token && $rootScope.username) {
@@ -62,6 +62,17 @@ app.run(function($rootScope) {
     $rootScope.logs = [];
     $rootScope.focused = null;
 
+    // Re-login
+
+    $rootScope.relogin = () => {
+        $rootScope.logList = [];
+        $rootScope.logs = [];
+        $rootScope.focused = null;
+        $rootScope.loggedIn = false;
+        $location.path("/login");
+        $rootScope.$apply();
+    }
+
     // Error display
 
     $rootScope.errorMessage = "";
@@ -73,5 +84,27 @@ app.run(function($rootScope) {
     $rootScope.hideError = () => {
         $(".error-message").css("display", "none");
         $rootScope.errorMessage = "";
+    }
+
+    // Shadowbox display 
+
+    $rootScope.generateShadowbox = (message, button, input) => {
+        $(".shadow-box").remove();
+        let shadowbox = `
+            <div class="shadow-box container-fluid">
+                <div class="row">
+                    <div class="light-box col-10 offset-1 col-md-4 offset-md-4">
+                        <div class="message">${message}</div>
+                        ${(() => {
+                            return (input ? '<input spellcheck="false">' : '')
+                        })()}
+                        <br><br><span class="action-button">${button}</span>
+                    </div>
+                </div>
+                <div class="shadow"></div>
+            </div>
+        `;
+        $("#view").prepend(shadowbox)
+        return $("#view .shadow-box");
     }
 });

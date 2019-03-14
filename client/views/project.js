@@ -1,4 +1,4 @@
-app.controller("project", function($scope, $location, $rootScope) {
+app.controller("project", function($scope, $location, $rootScope, $compile) {
     if($scope.loggedIn == false) {
         $location.path("/login");
     }
@@ -17,12 +17,14 @@ app.controller("project", function($scope, $location, $rootScope) {
                     error: err => {
                         console.log(err);
                         $scope.showError(err.responseJSON.message);
+                        $scope.relogin();
                         reject(err);
                     }
                 });
             } else {
-                reject("Incorrect logid in url");
                 $location.path("/bench");
+                $scope.$apply();
+                reject("Incorrect logid in url");
             }
         });
     };
@@ -90,7 +92,7 @@ app.controller("project", function($scope, $location, $rootScope) {
                     logid: $scope.logid,
                     entryid: id
                 },
-                success: (data) => {
+                success: data => {
                     console.log(data);
                     resolve(data);
                     for(let entry in $scope.log.entries) {
@@ -110,6 +112,29 @@ app.controller("project", function($scope, $location, $rootScope) {
         }); 
     }
     $scope.deleteLog = () => {
+        let $confirmbox = $scope.generateShadowbox("Confirm your project name to delete.", "Delete", true),
+            $button = $confirmbox.find(".action-button");
+            $input = $confirmbox.find("input"),
+            $shadow = $confirmbox.find(".shadow");
+        $shadow.on("click", () => {
+            $confirmbox.remove();
+        });
+        console.log($input);
+        $button.css("background-color", "#ccc");
+        $input.on("change keyup paste", () => {
+            if($input.val() == $scope.log.name) {
+                $input.css("border-bottom-color", "#99CC99");
+                $button.attr("style", "");
+                $button.off("click");
+                $button.on("click", $scope.confirmedLogDelete);
+            } else {
+                $input.css("border-bottom-color", "var(--accent-color)");
+                $button.css("background-color", "#ccc");
+                $button.off("click");
+            }
+        });
+    }
+    $scope.confirmedLogDelete = () => {
         var deleteBody = {
             username: window.credentials.username,
             token: window.serverAccessToken,

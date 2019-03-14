@@ -1,4 +1,4 @@
-app.controller("bench", function($scope, $location) {
+app.controller("bench", function($scope, $rootScope, $location) {
     if($scope.loggedIn == false) {
         return $location.path("/login");
     }
@@ -16,6 +16,7 @@ app.controller("bench", function($scope, $location) {
                 error: (err) => {
                     console.log(err);
                     $scope.showError(err.responseJSON.message);
+                    $scope.relogin();
                     reject(err);
                 }
             })

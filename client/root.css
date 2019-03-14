@@ -9,6 +9,10 @@
     --transition-time: 150ms;
 }
 
+html {
+    -webkit-font-smoothing: antialiased;
+}
+
 @font-face {
     font-family: Source;
     src: url(lib/font/SourceSansPro-Regular.otf);
@@ -111,4 +115,74 @@ body {
 }
 .error-message:hover {
     background-color: var(--accent-color-lighter);
+}
+
+.shadow-box {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.shadow-box .shadow {
+    width: 100%;
+    height: 100%;
+    background-color: #545454;
+    opacity: 0.5;
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.shadow-box .light-box {
+    text-align: center;
+    border-radius: 5px;
+    background-color: white;
+    padding: 20px;
+    z-index: 200;
+    margin-top: 30vh;
+    position: relative;
+}
+.shadow-box .light-box >* {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+.shadow-box .light-box .message {
+    font-family: var(--serif);
+    color: var(--font-color-3);
+    font-size: 20px;
+    line-height: 25px;
+}
+.shadow-box .light-box input {
+    background-color: #efefef;
+    outline: none;
+    border: none;
+    border-bottom: solid 1px transparent;
+    text-align: center;
+    color: var(--font-color-3);
+    font-family: source;
+}
+.shadow-box .light-box input:focus {
+    border-bottom: solid 1px var(--accent-color);
+}
+.shadow-box .light-box ::placeholder {
+    color: #ccc;
+}
+.shadow-box .light-box .action-button {
+    border-radius: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    background-color: var(--accent-color-lighter);
+    color: var(--font-color-2);
+    cursor: pointer;
+    user-select: none;
+    transition: all var(--transition-time) ease-in;
+}
+
+.shadow-box .light-box .action-button:hover {
+    background-color: var(--accent-color);
 }
