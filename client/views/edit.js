@@ -6,7 +6,7 @@ app.controller("edit", function($scope, $location, $rootScope) {
         let href = window.location.href.split("/"),
             id = href.pop(),
             type = href.pop();
-        if((id.substring(0, 3).includes("entry") && type == "entry") || (id.substring(0, 3).includes("log") && type == "log")) {
+        if((id.substring(0, 5).includes("entry") && type == "entry") || (id.substring(0, 3).includes("log") && type == "log")) {
             if($rootScope.focused == null) $location.path("/bench");
             return {
                 id: id,

@@ -3,29 +3,68 @@ const helper = require("./helper"),
     db = new DBUtil();
 
 module.exports = async (req, res) => {
-    var reqv = await helper.requestValidate([
-        [req.query.username, "string"],
-        [req.query.token, "string"],
-        [req.query.logid, "string"]
-    ], true, res);
-    if(reqv != true) return;
+    if(
+        (await helper.requestValidate([
+            [req.query.logid, "string"]
+        ], false, res)) != true
+    ) return;
 
-    var userLogs = await db.logList(req.query.username);
-    let decodedLogid = req.query.logid;
-    if(userLogs == false || !(userLogs.logs.includes(decodedLogid))) {
-        return res.status(404).send({
-            "message": "That log does not exist!"
-        });
+    var hexRegex = /[0-9A-Fa-f]/g,
+        log = {};
+    if(req.query.logid.substring(0,3) == "log" && hexRegex.test(req.query.logid.substring(3))) {
+        let result = await db.logDump(req.query.logid);
+        console.log(result);
+        if(result.success == false) {
+            return res.status(500).send({
+                "message": "Log dump error",
+                "error": result.error
+            });
+        }
+        log = result;
     }
     
-    var result = await db.logDump(decodedLogid);
-    if(result.success == false) {
-        return res.status(500).send({
-            "message": "Log dump error"
-        });
+    var public = JSON.parse(log.log.public),
+        owner = log.log.owner;
+
+    if(public) {
+        if(owner == req.query.username) {
+            if(
+                (await helper.requestValidate([
+                    [req.query.username, "string"],
+                    [req.query.token, "string"],
+                    [req.query.logid, "string"]
+                ], true, res)) != true
+            ) return;
+            return res.status(200).send({
+                "message": "Log dump success!",
+                "log": helper.decodifyLog(log.log),
+                "owner": true
+            });
+        } else {
+            return res.status(200).send({
+                "message": "Log dump success!",
+                "log": helper.decodifyLog(log.log),
+                "owner": false
+            });
+        }
+    } else {
+        if(owner == req.query.username) {
+            if(
+                (await helper.requestValidate([
+                    [req.query.username, "string"],
+                    [req.query.token, "string"],
+                    [req.query.logid, "string"]
+                ], true, res)) != true
+            ) return;
+            return res.status(200).send({
+                "message": "Log dump success!",
+                "log": helper.decodifyLog(log.log),
+                "owner": true
+            });
+        } else {
+            return res.status(403).send({
+                "message": "Cannot view private log."
+            });
+        }
     }
-    return res.status(200).send({
-        "message": "Log dump success!",
-        "log": helper.decodifyLog(result.log)
-    });
 }

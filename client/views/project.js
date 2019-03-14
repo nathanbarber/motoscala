@@ -1,17 +1,16 @@
 app.controller("project", function($scope, $location, $rootScope, $compile) {
-    if($scope.loggedIn == false) {
-        $location.path("/login");
-    }
     $scope.logid = window.location.href.split("/").pop();
+    $scope.query = '';
     $scope.loaded = false;
-    $scope.getLog = logid => {
+    $scope.getLog = (dumpURI) => {
         return new Promise((resolve, reject) => {
             console.log("promise loaded");
             if($scope.logid.substring(0, 3).includes("log") && $scope.logid.length == 67) {
                 $.ajax({
-                    url: `/dump-log?username=${window.credentials.username}&logid=${logid}&token=${window.serverAccessToken}`, 
+                    url: dumpURI, 
                     method: "GET",
                     success: data => {
+                        console.log(data);
                         resolve(data.log);
                     },
                     error: err => {
@@ -44,7 +43,9 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
         });
     };
     $scope.loadLog = async () => {
-        $scope.log = await $scope.getLog($scope.logid);
+        $scope.log = await $scope.getLog(
+            `/dump-log?username=${window.credentials ? window.credentials.username : ''}&logid=${$scope.logid}&token=${window.serverAccessToken || ''}`
+        );
         for(let entry of $scope.log.entries) {
             if(entry.href) {
                 try { 
@@ -55,6 +56,7 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
                 }
             }
         }
+        $scope.ownerMatch = ($scope.log.owner == (window.credentials ? window.credentials.username : ''));
         $scope.loaded = true;
         $scope.$apply();
         console.log("Log", $scope.log)
@@ -66,28 +68,13 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
     $scope.createEntry = () => {
         $location.path(`/create-entry/${$scope.logid}`);
     }
-    $scope.showActions = ($event) => {
-        console.log($event);
-        let $entry = (() => {
-                if($($event.target).attr("class").includes("entry")) {
-                    return $($event.target);
-                }
-                return $($event.target).parent();
-            })(),
-            $action = $entry.children(".action");
-        if($action.css("display") == "none") {
-            $action.css("display", "block");
-        } else {
-            $action.css("display", "none");
-        }
-    }
     $scope.deleteEntry = id => {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: "/delete-entry",
                 method: "POST",
                 data: {
-                    username: window.credentials.username,
+                    username: window.credentials ? window.credentials.username: '',
                     token: window.serverAccessToken,
                     logid: $scope.logid,
                     entryid: id
@@ -136,7 +123,7 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
     }
     $scope.confirmedLogDelete = () => {
         var deleteBody = {
-            username: window.credentials.username,
+            username: window.credentials ? window.credentials.username : '',
             token: window.serverAccessToken,
             logid: $scope.logid
         }
@@ -161,6 +148,7 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
     $scope.updateEntry = id => {
         $rootScope.focused = $scope.log;
         $rootScope.focused.logid = $scope.logid;
+        console.log("focused", $rootScope.focused);
         $location.path(`/edit/entry/${id}`);
     }
     $scope.updateLog = () => {

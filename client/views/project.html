@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-12 text-center name">
             {{log.name}} 
-            <span class="action-bar">
+            <span class="action-bar" ng-show="ownerMatch">
                 <img class="action-icon" src="lib/edit.png" alt="" ng-click="updateLog()">
                 <img class="action-icon" src="lib/delete.png" alt="" ng-click="deleteLog()">
             </span>
@@ -12,11 +12,10 @@
         <div 
             class="col-10 col-md-6 col-xl-4 offset-1 offset-md-3 offset-xl-4 entry" 
             ng-repeat="entry in log.entries track by $index"
-            ng-click="showActions($event)">
             <img class="image" ng-src="{{entry.media}}">
             <div class="title">{{entry.title}}</div>
             <div class="text text-left">{{entry.text}}</div>
-            <div class="action-bar text-center">
+            <div class="action-bar text-center" ng-show="ownerMatch">
                 <img class="action-icon" src="lib/edit.png" ng-click="updateEntry(entry.id)" alt="">
                 <img class="action-icon" src="lib/delete.png" ng-click="deleteEntry(entry.id)" alt="">
             </div>
@@ -24,7 +23,7 @@
     </div>
     <div class="row">
         <div class="col-10 col-sm-6 col-md-4 col-xl-2 offset-1 offset-sm-3 offset-md-4 offset-xl-5 text-center">
-            <div class="button" ng-click="createEntry()">New Entry</div>
+            <div class="button" ng-click="createEntry()" ng-show="ownerMatch">New Entry</div>
         </div>
     </div>
 </div>

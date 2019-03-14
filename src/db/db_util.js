@@ -150,7 +150,8 @@ class DBUtil {
                     "name": logname,
                     "description": description,
                     "entries": [],
-                    "public": false
+                    "public": false,
+                    "owner": username
                 }),
                 id = "log" + crypto.randomBytes(32).toString("hex"),
                 userLogIds = await this.q(`select logs from users where username='${username}'`),
