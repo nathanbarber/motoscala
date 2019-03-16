@@ -21,7 +21,7 @@ const express = require("express"),
         helper: require("./src/server/helper")
     }
     dist = `${__dirname}/dist`,
-    PORT = 8080;
+    PORT = process.env.PORT || 8000;
 
 var db = new DBUtil();
 

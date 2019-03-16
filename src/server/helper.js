@@ -109,7 +109,14 @@ module.exports = {
                 <body>
                     <div class="img-container"><img src="cid:928375109"></div>
                     <div class="header">Click below to validate your email.</div>
-                    <div class="button-container"><a class="button" style="color: #efefef" href="http://localhost:8080/validate-email?username=${username}&token=${token}">Confirm</a></div>
+                    <div class="button-container">
+                        <a 
+                            class="button" 
+                            style="color: #efefef" 
+                            href="${process.env.VALIDATE_HOST || 'https://www.motoscala.com'}/validate-email?username=${username}&token=${token}">
+                                Confirm
+                        </a>
+                    </div>
                     <br>
                 </body>
             </html>`
