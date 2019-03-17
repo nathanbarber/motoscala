@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
         token = req.query.token;
     var result = await db.validateHash(username, token);
     if(result.error || !result.success || !result.validated) {
-        return res.send(500, {
+        return res.status(500).send({
             "message": "Server error, could not validate."
         });
     }

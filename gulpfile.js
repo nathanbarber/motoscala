@@ -6,7 +6,6 @@ const gulp = require('gulp'),
     fs = require('fs'),
     del = require("del"),
     nodemon = require("gulp-nodemon"),
-    zip = require('gulp-zip'),
     spawn = require("child_process").spawn,
     build = `${__dirname}/client`,
     prod = `${__dirname}/dist`,
@@ -56,33 +55,4 @@ gulp.task("nodemon", () => {
         ext: "js css html",
         ignore: prod
     }).on("restart", ['build'])
-});
-
-// Deploytime
-
-gulp.task("collect", () => {
-    let bundlename = `${__dirname}/MotoScala-${require('./package.json').version}`;
-    del.sync([`${__dirname}/Motoscala-Dist.zip`, `!${__dirname}`]);
-    gulp.src([
-        `${__dirname}/*.json`,
-        `${__dirname}/index.js`,
-        `${__dirname}/icon.png`,
-        `${__dirname}/.env`
-    ]).pipe(gulp.dest(bundlename));
-    gulp.src(`${__dirname}/src/**`)
-        .pipe(gulp.dest(bundlename + "/src"));
-    gulp.src(`${__dirname}/dist/**`)
-        .pipe(gulp.dest(bundlename + "/dist"));
-});
-
-gulp.task("compress", () => {
-    let bundlename = `${__dirname}/MotoScala-${require('./package.json').version}/**`;
-    gulp.src(bundlename)
-        .pipe(zip("Motoscala-Dist.zip"))
-        .pipe(gulp.dest(`${__dirname}`));
-});
-
-gulp.task("cdf", () => {
-    let bundlename = `${__dirname}/MotoScala-${require('./package.json').version}`;
-    del.sync([bundlename, `!${__dirname}`]);
 });

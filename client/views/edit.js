@@ -49,7 +49,9 @@ app.controller("edit", function($scope, $location, $rootScope) {
         return new Promise((resolve, reject) => {
             var reader = new FileReader();
             reader.readAsDataURL(url);
-            reader.onload = () => { resolve(reader.result) };
+            reader.onload = () => {
+                resolve(reader.result);
+            };
             reader.onerror = error => { 
                 $scope.showError("Cannot read image")
             };
@@ -70,10 +72,22 @@ app.controller("edit", function($scope, $location, $rootScope) {
             });
         });
     };
-    $scope.updatedMedia = async (input) => {
+    $scope.onUpdatedMedia = async (input) => {
         let media = input.files[0];
+        let rexif = await new Promise((resolve) => {
+            loadImage(
+                media,
+                function(img) {
+                    resolve(img.toDataURL('image/jpeg', 0.5))
+                },
+                {
+                    orientation: true
+                }
+            );
+        });
+        console.log("rendered", rexif);
         console.log(media);
-        $scope.media = await $scope.readMedia(media);
+        $scope.media = rexif;
         $scope.hasMedia = true;
         $scope.updatedMedia = true;
         $scope.$apply();

@@ -28,6 +28,7 @@ var db = new DBUtil();
 var app = express()
     .use(express.static(dist))
     .use("/jquery", express.static(`${__dirname}/node_modules/jquery/dist/jquery.js`))
+    .use("/croppie", express.static(`${__dirname}/node_modules/croppie`))
     .use("/media", express.static(`${__dirname}/fstore`))
     .use(bp.json({limit: '10mb'}))
     .use(bp.urlencoded({limit: '10mb', extended: false}))

@@ -91,6 +91,7 @@ function verify(cred) {
             case "username": 
                 if(/^[_A-z0-9]*((-|\s)*[_A-z0-9])*$/g.test(cred[part]) == false) return [false, "Remove special characters from your username"];
                 if(cred[part].length < 5) return [false, "Your username must be five or more characters in length"];
+                if(cred[part].includes(" ")) return [false, "Remove all spaces from your username."];
                 break;
             case "password":
                 if(cred[part].length < 5) return [false, "Your password must be five or more characters in length (for security)"];
