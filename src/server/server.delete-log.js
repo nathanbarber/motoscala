@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     for(let entry of log.log.entries) {
         if(typeof entry.href == "string") {
             try {
-                let delPath = `${__dirname}/../../fstore${entry.href}`;
+                let delPath = `${process.env.FSTORE}${entry.href}`;
                 fs.unlinkSync(delPath);
             } catch(err) {
                 console.log("Delete failed for ", entry.href);

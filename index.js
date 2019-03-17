@@ -29,7 +29,7 @@ var app = express()
     .use(express.static(dist))
     .use("/jquery", express.static(`${__dirname}/node_modules/jquery/dist/jquery.js`))
     .use("/croppie", express.static(`${__dirname}/node_modules/croppie`))
-    .use("/media", express.static(`${__dirname}/fstore`))
+    .use("/media", express.static(process.env.FSTORE))
     .use(bp.json({limit: '10mb'}))
     .use(bp.urlencoded({limit: '10mb', extended: false}))
     .use((req, res, next) => {

@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
     // Store image in fstore
     var mediaHref = '';
     if(req.body.media && typeof req.body.media == "string") {
-        let mediaDir = `${__dirname}/../../fstore/${req.body.username}`;
+        let mediaDir = `${process.env.FSTORE}/${req.body.username}`;
         mediaHref = `${mediaDir}/${crypto.randomBytes(30).toString("hex")}`
         try {
             fs.mkdirsSync(mediaDir);
@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
             });
         }
     }
-    var result = await db.entryCreate(req.body.logid, req.body.etitle, req.body.etext, mediaHref.split("fstore")[1]);
+    var result = await db.entryCreate(req.body.logid, req.body.etitle, req.body.etext, mediaHref.replace(`${process.env.FSTORE}`, ''));
     if(result.success) return res.status(200).send({
         "message": "Entry created successfully!"
     });

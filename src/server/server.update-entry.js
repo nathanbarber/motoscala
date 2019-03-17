@@ -45,13 +45,13 @@ module.exports = async (req, res) => {
     // update media
     var mediaHref = '';
     if(req.body.media && typeof req.body.media == "string") {
-        let mediaDir = `${__dirname}/../../fstore/${req.body.username}`;
+        let mediaDir = `${process.env.FSTORE}/${req.body.username}`;
         mediaHref = `${mediaDir}/${crypto.randomBytes(30).toString("hex")}`
         try {
             fs.mkdirsSync(mediaDir);
             fs.writeFileSync(mediaHref, req.body.media);
             if(entry.href) {
-                fs.unlinkSync(`${__dirname}/../../fstore${entry.href}`);
+                fs.unlinkSync(`${process.env.FSTORE}${entry.href}`);
                 console.log("Removed old asset");
             }
         } catch(err) {
@@ -64,7 +64,7 @@ module.exports = async (req, res) => {
     }
     var result;
     if(mediaHref.length > 0) {
-        result = await db.entryUpdate(req.body.logid, req.body.entryid, req.body.etitle, req.body.etext, mediaHref.split("fstore")[1]);
+        result = await db.entryUpdate(req.body.logid, req.body.entryid, req.body.etitle, req.body.etext, mediaHref.replace(`${process.env.FSTORE}`, ''));
     } else {
         result = await db.entryUpdate(req.body.logid, req.body.entryid, req.body.etitle, req.body.etext, entry.href);
     }

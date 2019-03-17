@@ -4,7 +4,7 @@ const helper = require("./helper"),
 
 module.exports = async (req, res) => {
     try {
-        let media = fs.readFileSync(`${__dirname}/fstore${req.query.path}`, "utf-8");
+        let media = fs.readFileSync(`${process.env.FSTORE}${req.query.path}`, "utf-8");
         console.log(media);
         res.send(media);
     } catch(err) {
