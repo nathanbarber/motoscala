@@ -27,7 +27,7 @@
                     id="upload-media" 
                     ng-model="entryMedia"
                     accept="image/x-png,image/gif,image/jpeg"
-                    onchange="angular.element(this).scope().updatedMedia(this)">
+                    onchange="angular.element(this).scope().onUpdatedMedia(this)">
                 <div class="choose-image-wrapper">
                     <label class="entry-file-upload" for="upload-media">Choose your image</label>
                     <img class="media-display" ng-src="{{media}}" ng-show="hasMedia">

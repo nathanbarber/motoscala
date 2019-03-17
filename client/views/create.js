@@ -24,16 +24,24 @@ app.controller("create", function($scope, $location) {
             };
         });
     }
-    $scope.updatedMedia = async (input) => {
+    $scope.onUpdatedMedia = async (input) => {
         let media = input.files[0];
-        console.log(media);
-        $scope.media = await $scope.readMedia(media);
+        let rexif = await new Promise((resolve) => {
+            loadImage(
+                media,
+                function(img) {
+                    resolve(img.toDataURL('image/jpeg', 0.5))
+                },
+                {
+                    orientation: true
+                }
+            );
+        });
+        $scope.media = rexif;
         $scope.hasMedia = true;
         $scope.$apply();
-        console.log($scope.media);
     }
     $scope.createLog = () => {
-        console.log("Creating project");
         return new Promise((resolve, reject) => {
             let createLogRequest = {
                 username: window.credentials.username,
