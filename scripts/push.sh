@@ -9,9 +9,11 @@ cp -r dist Motoscala-Dist
 cp -r src Motoscala-Dist
 cp index.js Motoscala-Dist
 cp icon.png Motoscala-Dist
-cp load.sh Motoscala-Dist
 cp *.json Motoscala-Dist
 cp .env Motoscala-Dist
+mkdir Motoscala-Dist/scripts
+cp scripts/load.sh Motoscala-Dist/scripts
+cp Makefile Motoscala-Dist/Makefile
 
 zip -r Motoscala-Dist.zip Motoscala-Dist
 rm -r Motoscala-Dist
@@ -24,7 +26,7 @@ scp ./Motoscala-Dist.zip $user@$HOST_EC2:~/
 echo "Success!"
 rm ./Motoscala-Dist.zip
 
-read -p "Continue load process on EC2? (yes/no)" signin_ec2
+read -p "Continue load process on EC2? (yes/no) >> " signin_ec2
 
 if [[ $signin_ec2 == *"yes"* ]]; then
     ssh $user@$HOST_EC2
