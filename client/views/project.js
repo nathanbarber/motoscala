@@ -46,6 +46,7 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
         $scope.log = await $scope.getLog(
             `/dump-log?username=${window.credentials ? window.credentials.username : ''}&logid=${$scope.logid}&token=${window.serverAccessToken || ''}`
         );
+        $rootScope.focused = $scope.log;
         for(let entry of $scope.log.entries) {
             if(entry.href) {
                 try { 
@@ -157,3 +158,7 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
         $location.path(`/edit/log/${$scope.logid}`)
     }
 });
+
+function entryFormatter(text) {
+    
+}

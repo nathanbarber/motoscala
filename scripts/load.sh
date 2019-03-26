@@ -15,7 +15,4 @@ if [[ `pwd` == *"Motoscala"* && `ls schema` == *"update.sql"* ]]; then
     fi
 fi
 
-forever start ./index.js
-forever list
-
 echo "Application init load finished"

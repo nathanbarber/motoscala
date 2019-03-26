@@ -1,5 +1,9 @@
-load:
-	./scripts/load.sh
+dev:
+	./scripts/run.staging.sh
 
-push:
+load-app:
+	./scripts/load.sh
+	./scripts/run.production.sh
+
+push-app:
 	./scripts/push.sh

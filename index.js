@@ -57,4 +57,3 @@ app.get("/get-media", server.getMedia);
 app.post("/make-entry", server.makeEntry);
 app.post("/update-entry", server.updateEntry);
 app.post("/delete-entry", server.deleteEntry);
-

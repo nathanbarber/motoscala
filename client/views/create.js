@@ -2,9 +2,13 @@ app.controller("create", function($scope, $location) {
     if($scope.loggedIn == false) {
         $location.path("/login");
     }
-    $scope.logName = "Ex. Rocket Couch";
-    $scope.logDescription = "Airplanes? No, this isn't 1990. I introduce to you the flying fouton.";
-    $scope.logTags = "comfy, spacious, speedy";
+    if($scope.focused == undefined) {
+        $location.path("/bench");
+        return;
+    }
+    $scope.logName = $scope.focused.name;
+    $scope.logDescription = $scope.focused.description;
+    $scope.logTags = $scope.focused.tags;
     $scope.entryCreateVisible = false;
     $scope.entryCreate = () => {
         $scope.entryCreateVisible = true;
