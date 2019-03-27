@@ -74,6 +74,7 @@
     transition: all var(--transition-time) ease-in;
     width: 100%;
     border-radius: 0px;
+    height: 100px;
 }
 .editor textarea.log-tags {
     color: var(--font-color-1);

@@ -10,11 +10,9 @@ app.controller("bench", function($scope, $rootScope, $location) {
                 url: `/list-log?username=${window.credentials.username}&token=${window.serverAccessToken}`,
                 method: "GET",
                 success: (data) => {
-                    console.log(data);
                     resolve(data.logs);
                 },
                 error: (err) => {
-                    console.log(err);
                     $scope.showError(err.responseJSON.message);
                     $scope.relogin();
                     reject(err);
@@ -28,11 +26,9 @@ app.controller("bench", function($scope, $rootScope, $location) {
                 url: `/dump-log?username=${window.credentials.username}&logid=${logid}&token=${window.serverAccessToken}`, 
                 method: "GET",
                 success: (data) => {
-                    console.log(data);
                     resolve(data.log);
                 },
                 error: (err) => {
-                    console.log(err);
                     $scope.showError(err.responseJSON.message);
                     reject(err);
                 }
@@ -69,8 +65,15 @@ app.controller("bench", function($scope, $rootScope, $location) {
             log.id = logid
             $scope.logs.push(log);
         }
+        // Format log text
+        $scope.display.logs = $scope.logs;
+        for(let log of $scope.display.logs) {
+            $scope.textNormalizer(log, "description");
+            for(let entry of log.entries) {
+                $scope.textNormalizer(entry, "text")
+            }
+        }
         $scope.logsLoaded = true;
-        console.log("Loaded logs", $scope.logs);
         window.logs = $scope.logs;
         $scope.$apply();
     })();

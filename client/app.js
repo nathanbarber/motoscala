@@ -1,4 +1,4 @@
-var app = angular.module("motoscala", ['ngRoute']);
+var app = angular.module("motoscala", ['ngRoute', 'ngSanitize']);
 app.config(function($routeProvider, $locationProvider) {
     $routeProvider
         .when("/", {
@@ -60,6 +60,10 @@ app.run(function($rootScope, $location) {
     }
     $rootScope.logList = [];
     $rootScope.logs = [];
+    $rootScope.display = {
+        logs: [],
+        log: {}
+    };
     $rootScope.focused = null;
 
     // Re-login
@@ -106,5 +110,55 @@ app.run(function($rootScope, $location) {
         `;
         $("#view").prepend(shadowbox)
         return $("#view .shadow-box");
+    }
+
+    // Format text
+
+    $rootScope.textFormatter = (object, attr) => {
+        // Render newline correctly
+        object[attr] = object[attr].replace(/\n/g, "\n");
+        // Render html out of the mix
+        object[attr] = object[attr].replace(/</g, "&lt");
+        object[attr] = object[attr].replace(/>/g, "&gt");
+        // Make _str_ bold
+        let matchBolds = object[attr].match(/_/g),
+            numBolds = matchBolds ? matchBolds.length : 0,
+            num = numBolds - (numBolds % 2),
+            countConv = 0,
+            beginTag = true,
+            htmlConverted = "";
+        for(let i of object[attr]) {
+            if(i == "_" && countConv <= num) {
+                if(beginTag) { htmlConverted += "<strong>"; beginTag = false } 
+                else { htmlConverted += "</strong>"; beginTag = true }
+                countConv++;
+                continue;
+            }
+            htmlConverted += i;
+        }
+        object[attr] = htmlConverted;
+        // Make *str* italic
+        let matchItalic = object[attr].match(/\*/g),
+            numItalic = matchItalic ? matchItalic.length : 0;
+            num = numItalic - (numItalic % 2),
+            countConv = 0,
+            beginTag = true,
+            htmlConverted = "";
+        for(let i of object[attr]) {
+            if(i == "*" && countConv <= num) {
+                if(beginTag) { htmlConverted += "<i>"; beginTag = false } 
+                else { htmlConverted += "</i>"; beginTag = true }
+                countConv++;
+                continue;
+            }
+            htmlConverted += i;
+        }
+        object[attr] = htmlConverted;
+        return object;
+    }
+    $rootScope.textNormalizer = (object, attr) => {
+        object[attr] = object[attr].replace(/_/g, '');
+        object[attr] = object[attr].replace(/\*/g, '');
+        return object;
     }
 });

@@ -16,7 +16,6 @@ app.controller("edit", function($scope, $location, $rootScope) {
         return $location.path("/bench");
     })();
     $scope.entryIndex = () => {
-        console.log($rootScope.focused);
         for(let entry in $rootScope.focused.entries) {
             if($rootScope.focused.entries[entry].id == $scope.ids.id) return entry;
         }
@@ -28,7 +27,6 @@ app.controller("edit", function($scope, $location, $rootScope) {
         }
     })();
     $scope.changeAccess = () => {
-        console.log("Called changeaccess");
         if($rootScope.focused.public == false) {
             $rootScope.focused.public = true;
             $(".toggle").css("backgroundColor", "var(--accent-color");
@@ -43,7 +41,6 @@ app.controller("edit", function($scope, $location, $rootScope) {
                 "backgroundColor": "var(--accent-color-lighter)"
             }, 200);
         }
-        console.log($rootScope.focused.public);
     }
     $scope.readMedia = (url) => {
         return new Promise((resolve, reject) => {
@@ -85,13 +82,10 @@ app.controller("edit", function($scope, $location, $rootScope) {
                 }
             );
         });
-        console.log("rendered", rexif);
-        console.log(media);
         $scope.media = rexif;
         $scope.hasMedia = true;
         $scope.updatedMedia = true;
         $scope.$apply();
-        console.log($scope.media);
     }
     $scope.load = async () => {
         if($scope.ids.type == "entry") {
@@ -122,14 +116,12 @@ app.controller("edit", function($scope, $location, $rootScope) {
                 method: "POST",
                 data: updateBody,
                 success: data => {
-                    console.log(data);
                     let logid = $rootScope.focused.logid;
                     $rootScope.focused = null;
                     $location.path(`/project/${logid}`);
                     $scope.$apply();
                 },
                 error: err => {
-                    console.log(err);
                     $scope.showError(err.responseJSON.message);
                 }
             })
@@ -153,14 +145,12 @@ app.controller("edit", function($scope, $location, $rootScope) {
                 method: "POST",
                 data: updateBody,
                 success: data => {
-                    console.log(data);
                     let logid = $rootScope.focused.logid;
                     $rootScope.focused = null;
                     $location.path(`/project/${logid}`);
                     $scope.$apply();
                 },
                 error: err => {
-                    console.log(err);
                     $scope.showError(err.responseJSON.message);
                 }
             })

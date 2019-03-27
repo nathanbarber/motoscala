@@ -1,20 +1,20 @@
 <div class="container-fluid section project" ng-show="loaded">
     <div class="row">
         <div class="col-12 text-center name">
-            {{log.name}} 
+            {{display.log.name}} 
             <span class="action-bar" ng-show="ownerMatch">
                 <img class="action-icon" src="lib/edit.png" alt="" ng-click="updateLog()">
                 <img class="action-icon" src="lib/delete.png" alt="" ng-click="deleteLog()">
             </span>
         </div>
         <div class="col-10 col-md-6 col-xl-4 offset-1 offset-md-3 offset-xl-4 error-message" ng-click="hideError()"><strong>!</strong> {{errorMessage}}</div>
-        <div class="col-10 col-md-6 col-xl-4 offset-1 offset-md-3 offset-xl-4 description">{{log.description}}</div>
+        <div class="col-10 col-md-6 col-xl-4 offset-1 offset-md-3 offset-xl-4 description" ng-bind-html="display.log.description"></div>
         <div 
             class="col-10 col-md-6 col-xl-4 offset-1 offset-md-3 offset-xl-4 entry" 
-            ng-repeat="entry in log.entries track by $index">
+            ng-repeat="entry in display.log.entries track by $index">
             <img class="image" ng-src="{{entry.media}}">
             <div class="title">{{entry.title}}</div>
-            <div class="text text-left">{{entry.text}}</div>
+            <div class="text text-left" ng-bind-html="entry.text"></div>
             <div class="action-bar text-center" ng-show="ownerMatch">
                 <img class="action-icon" src="lib/edit.png" ng-click="updateEntry(entry.id)" alt="">
                 <img class="action-icon" src="lib/delete.png" ng-click="deleteEntry(entry.id)" alt="">

@@ -15,6 +15,7 @@
     border-left: 1px solid var(--accent-color);
     background-color: #efefef;
     margin-bottom: 100px;
+    white-space: pre-line;
 }
 .project .action-bar {
     margin-left: 20px;
@@ -62,6 +63,7 @@
     border-radius: 5px;
     /* border-left: 1px solid var(--accent-color); */
     padding: 10px;
+    white-space: pre-line;
 }
 .project .entry .action-bar {
     margin: 0px;
@@ -72,19 +74,3 @@
     border-radius: 0px;
     margin: 0px;
 }
-/* .project .entry span {
-    background-color: var(--shadow-color-1);
-    border-radius: 5px;
-    padding: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 16px;
-    color: var(--accent-color);
-    margin: 25px;
-    cursor: pointer;
-    user-select: none;
-    transition: all var(--transition-time) ease-in;
-}
-.project .entry span:hover {
-    background-color: #ccc;
-} */

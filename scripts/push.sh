@@ -7,12 +7,12 @@ mkdir Motoscala-Dist
 
 cp -r dist Motoscala-Dist
 cp -r src Motoscala-Dist
+cp -r schema Motoscala-Dist
+cp -r scripts Motoscala-Dist
 cp index.js Motoscala-Dist
 cp icon.png Motoscala-Dist
 cp *.json Motoscala-Dist
 cp .env Motoscala-Dist
-mkdir Motoscala-Dist/scripts
-cp scripts/load.sh Motoscala-Dist/scripts
 cp Makefile Motoscala-Dist/Makefile
 
 zip -r Motoscala-Dist.zip Motoscala-Dist

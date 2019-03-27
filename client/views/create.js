@@ -52,7 +52,8 @@ app.controller("create", function($scope, $location) {
                 token: window.serverAccessToken,
                 logname: $scope.logName,
                 description: $scope.logDescription
-            };
+            }
+            
             $.ajax({
                 url: "/make-log", 
                 method: "POST",
@@ -94,7 +95,6 @@ app.controller("create", function($scope, $location) {
     $scope.initProject = async () => {
         let logid = (await $scope.createLog()).logid,
             createEntryRes = (await $scope.createEntry(logid));
-        console.log(createEntryRes);
         $location.path("/bench");
         $scope.$apply();
     }
@@ -104,7 +104,6 @@ app.controller("create", function($scope, $location) {
     $scope.logid = window.location.href.split("/").pop();
     $scope.initEntry = async () => {
         let createEntryRes = (await $scope.createEntry($scope.logid));
-        console.log(createEntryRes);
         $location.path(`/project/${$scope.logid}`);
         $scope.$apply();
     }

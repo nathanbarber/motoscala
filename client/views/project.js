@@ -4,17 +4,14 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
     $scope.loaded = false;
     $scope.getLog = (dumpURI) => {
         return new Promise((resolve, reject) => {
-            console.log("promise loaded");
             if($scope.logid.substring(0, 3).includes("log") && $scope.logid.length == 67) {
                 $.ajax({
                     url: dumpURI, 
                     method: "GET",
                     success: data => {
-                        console.log(data);
                         resolve(data.log);
                     },
                     error: err => {
-                        console.log(err);
                         $scope.showError(err.responseJSON.message);
                         $scope.relogin();
                         reject(err);
@@ -52,15 +49,19 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
                 try { 
                     entry.media = await $scope.loadMedia(entry.href) 
                 } catch(err) { 
-                    console.log(err);
                     $scope.showError("Could not load entry image");
                 }
             }
         }
         $scope.ownerMatch = ($scope.log.owner == (window.credentials ? window.credentials.username : ''));
+        // Create display log
+        $scope.display.log = JSON.parse(JSON.stringify($scope.log))
+        $scope.textFormatter($scope.display.log, "description");
+        for(let entry of $scope.display.log.entries) {
+            $scope.textFormatter(entry, "text");
+        }
         $scope.loaded = true;
         $scope.$apply();
-        console.log("Log", $scope.log)
     }
     $scope.loadLog();
 
@@ -81,7 +82,6 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
                     entryid: id
                 },
                 success: data => {
-                    console.log(data);
                     resolve(data);
                     for(let entry in $scope.log.entries) {
                         if($scope.log.entries[entry].id == id) {
@@ -89,10 +89,8 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
                         }
                     }
                     $scope.$apply();
-                    console.log($scope.log);
                 },
                 error: err => {
-                    console.log(err);
                     $scope.showError(err.responseJSON.message);
                     reject(err);
                 }
@@ -107,7 +105,6 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
         $shadow.on("click", () => {
             $confirmbox.remove();
         });
-        console.log($input);
         $button.css("background-color", "#ccc");
         $input.on("change keyup paste", () => {
             if($input.val() == $scope.log.name) {
@@ -139,7 +136,6 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
                     resolve(data)
                 },
                 error: err => {
-                    console.log(err);
                     $scope.showError(err.responseJSON.message);
                     reject(err);
                 }
@@ -149,7 +145,6 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
     $scope.updateEntry = id => {
         $rootScope.focused = $scope.log;
         $rootScope.focused.logid = $scope.logid;
-        console.log("focused", $rootScope.focused);
         $location.path(`/edit/entry/${id}`);
     }
     $scope.updateLog = () => {
@@ -158,7 +153,3 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
         $location.path(`/edit/log/${$scope.logid}`)
     }
 });
-
-function entryFormatter(text) {
-    
-}

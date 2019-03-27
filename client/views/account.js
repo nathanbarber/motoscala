@@ -14,7 +14,6 @@ app.controller("account", function($scope, $location, $rootScope) {
                     phone: $phone.val()
                 },
                 verified = verify(cred);
-            console.log(verified);
             if(Array.isArray(verified) && verified[0] == false) {
                 // Do something
                 $scope.showError(verified[1]);
@@ -28,11 +27,10 @@ app.controller("account", function($scope, $location, $rootScope) {
                             $location.path("/validate");
                             $scope.$apply();
                         } else {
-                            console.log("Signup err")
+                            $scope.showError("There's been a problem. We apologize for the inconvenience.");
                         }
                     },
                     error: (err) => {
-                        console.log(err);
                         $scope.showError(err.responseJSON.message);
                     }
                 });
@@ -48,7 +46,6 @@ app.controller("account", function($scope, $location, $rootScope) {
                     password: $pass.val()
                 },
                 verified = verify(cred);
-            console.log(verified);
             if(Array.isArray(verified) && verified[0] == false) {
                 // Do something
             } else {
@@ -59,14 +56,12 @@ app.controller("account", function($scope, $location, $rootScope) {
                     method: "POST",
                     data: verified,
                     success: (data) => {
-                        console.log("logged in");
                         if(data.token) {
                             window.serverAccessToken = data.token;
                             sessionStorage.setItem("motoscala-token", data.token);
                             $rootScope.username = window.credentials.username;
                             $rootScope.token = window.serverAccessToken;
                             $rootScope.loggedIn = true;
-                            console.log($rootScope.loggedIn);
                             $rootScope.$apply();
                             $location.path("/bench");
                             $rootScope.$apply();
@@ -75,7 +70,6 @@ app.controller("account", function($scope, $location, $rootScope) {
                         }
                     },
                     error: (err) => {
-                        console.log(err);
                         $scope.showError(err.responseJSON.message);
                     }
                 });
