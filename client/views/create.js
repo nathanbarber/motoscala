@@ -2,19 +2,26 @@ app.controller("create", function($scope, $location) {
     if($scope.loggedIn == false) {
         $location.path("/login");
     }
-    if($scope.focused == undefined) {
-        $location.path("/bench");
-        return;
+    if($location.path().includes("create-entry")) {
+        if($scope.focused == undefined) {
+            $location.path("/bench");
+            return;
+        }
+        $scope.logName = $scope.focused.name;
+        $scope.logDescription = $scope.focused.description;
+        $scope.logTags = $scope.focused.tags;
+    } else {
+        $scope.logName = "Your New Project!";
+        $scope.logDescription = "This is your description! _This will be in bold_ and *this will be italicized!*";
+        $scope.logTags = "hot, popping, heated debate";
     }
-    $scope.logName = $scope.focused.name;
-    $scope.logDescription = $scope.focused.description;
-    $scope.logTags = $scope.focused.tags;
+        
     $scope.entryCreateVisible = false;
     $scope.entryCreate = () => {
         $scope.entryCreateVisible = true;
     }
-    $scope.entryTitle = "";
-    $scope.entryText = "";
+    $scope.entryTitle = "Your First Entry!";
+    $scope.entryText = "Describe! Describe! Describe!";
     $scope.media = undefined;
     $scope.hasMedia = false;
     $scope.readMedia = (url) => {
