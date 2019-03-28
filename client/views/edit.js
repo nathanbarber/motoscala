@@ -15,6 +15,7 @@ app.controller("edit", function($scope, $location, $rootScope) {
         }
         return $location.path("/bench");
     })();
+    $scope.ids.logid = $rootScope.focused.logid;
     $scope.entryIndex = () => {
         for(let entry in $rootScope.focused.entries) {
             if($rootScope.focused.entries[entry].id == $scope.ids.id) return entry;
@@ -155,5 +156,8 @@ app.controller("edit", function($scope, $location, $rootScope) {
                 }
             })
         });
+    }
+    $scope.return = () => {
+        $location.path(`/project/${$scope.ids.logid}`)
     }
 });

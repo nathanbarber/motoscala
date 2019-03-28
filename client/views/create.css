@@ -103,8 +103,8 @@
 }
 
 .editor .editor-button-wrapper {
-    margin-top: 30px;
-    margin-bottom: 40px;
+    margin-top: 60px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
@@ -123,6 +123,13 @@
 .editor .editor-button:hover {
     background-color: var(--accent-color-lighter);
     box-shadow: 0px 3px 10px var(--shadow-color-1);
+}
+
+.editor .return-button {
+    color: var(--font-color-3);
+    font-style: italic;
+    user-select: none;
+    cursor: pointer;
 }
 
 .editor .entry-file-upload {
