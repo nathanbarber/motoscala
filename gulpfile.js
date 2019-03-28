@@ -43,7 +43,7 @@ gulp.task("html", () => {
 })
 
 gulp.task("viewshtml", () => {
-    return gulp.src(build + "/views/*.html")
+    return gulp.src(build + "/views/**/*.html")
         .pipe(gulp.dest(prod + "/views"))
 })
 

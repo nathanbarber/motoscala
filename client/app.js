@@ -2,43 +2,43 @@ var app = angular.module("motoscala", ['ngRoute', 'ngSanitize']);
 app.config(function($routeProvider, $locationProvider) {
     $routeProvider
         .when("/", {
-            templateUrl: "views/home.html",
+            templateUrl: "views/home/home.html",
             controller: "home"
         })
         .when("/signup", {
-            templateUrl: "views/account-signup.html",
+            templateUrl: "views/account/account-signup.html",
             controller: "account"
         })
         .when("/login", {
-            templateUrl: "views/account-login.html", 
+            templateUrl: "views/account/account-login.html", 
             controller: "account"
         })
         .when("/validate", {
-            templateUrl: "views/account-validate.html",
+            templateUrl: "views/account/account-validate.html",
             controller: "account"
         })
         .when("/bench", {
-            templateUrl: "views/bench.html",
+            templateUrl: "views/project/bench.html",
             controller: "bench"
         })
         .when("/project/:logid", {
-            templateUrl: "views/project.html",
+            templateUrl: "views/project/project.html",
             controller: "project"
         })
         .when("/create", {
-            templateUrl: "views/create.html",
+            templateUrl: "views/edit/create.html",
             controller: "create"
         })
         .when("/create-entry/:logid", {
-            templateUrl: "views/create-entry.html",
+            templateUrl: "views/edit/create-entry.html",
             controller: "create"
         })
         .when("/edit/log/:logid", {
-            templateUrl: "views/edit-log.html",
+            templateUrl: "views/edit/edit-log.html",
             controller: "edit"
         })
         .when("/edit/entry/:entryid", {
-            templateUrl: "views/edit-entry.html",
+            templateUrl: "views/edit/edit-entry.html",
             controller: "edit"
         })
         .otherwise({

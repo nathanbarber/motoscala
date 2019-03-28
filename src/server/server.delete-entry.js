@@ -30,6 +30,7 @@ module.exports = async (req, res) => {
     if(result.success) return res.status(200).send({
         "message": "Entry deleted successfully!"
     });
+    console.log(result);
     return res.status(500).send({
         "message": "Entry delete failed"
     });

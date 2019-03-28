@@ -86,6 +86,7 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
                     for(let entry in $scope.log.entries) {
                         if($scope.log.entries[entry].id == id) {
                             $scope.log.entries.splice(entry, 1);
+                            $scope.display.log.entries.splice(entry, 1);
                         }
                     }
                     $scope.$apply();
