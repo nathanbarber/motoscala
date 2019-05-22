@@ -12,7 +12,7 @@ const gulp = require('gulp'),
     node = undefined;
 
 gulp.task("clean", () => {
-    del.sync([__dirname + "/prod", "!" + __dirname])
+    return del.sync([__dirname + "/dist", "!" + __dirname])
 })
 
 gulp.task("css", () => {
@@ -47,10 +47,9 @@ gulp.task("viewshtml", () => {
         .pipe(gulp.dest(prod + "/views"))
 })
 
-gulp.task("build", ["clean", "css", "appjs", "combinejs", "lib", "html", "viewshtml"])
+gulp.task("build", gulp.parallel("clean", "css", "appjs", "combinejs", "lib", "html", "viewshtml"));
 
 gulp.task("nodemon", () => {
-    gulp.run("build");
     nodemon({
         ext: "js css html",
         ignore: prod
