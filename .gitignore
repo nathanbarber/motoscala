@@ -5,3 +5,4 @@ dist
 fstore/**
 MotoScala*
 scans
+package-lock.json
