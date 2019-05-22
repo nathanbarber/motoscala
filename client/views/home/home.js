@@ -3,6 +3,10 @@ app.controller("home", function($scope, $location) {
         if($scope.loggedIn) return $location.path("/bench");
         return $location.path("/signup");
     }
+    let iconInitialWidth = $("img.icon").width();
+    window.onscroll = function(event) {
+        $("img.icon").width(iconInitialWidth - ($(document).scrollTop() / 4));
+    }
 })
 
 function animation() {

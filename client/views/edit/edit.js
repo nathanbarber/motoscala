@@ -2,19 +2,7 @@ app.controller("edit", function($scope, $location, $rootScope) {
     if($scope.loggedIn == false) {
         $location.path("/login");
     }
-    $scope.ids = (() => {
-        let href = window.location.href.split("/"),
-            id = href.pop(),
-            type = href.pop();
-        if((id.substring(0, 5).includes("entry") && type == "entry") || (id.substring(0, 3).includes("log") && type == "log")) {
-            if($rootScope.focused == null) $location.path("/bench");
-            return {
-                id: id,
-                type: type
-            }
-        }
-        return $location.path("/bench");
-    })();
+    $scope.ids = $scope.getIDs();
     $scope.ids.logid = $rootScope.focused.logid;
     $scope.entryIndex = () => {
         for(let entry in $rootScope.focused.entries) {
