@@ -1,0 +1,3 @@
+ - Fix image persistance bug.
+        When switching logs, if entry number x has an image in log a but not in log b, the image will show in the number n entry of log b;
+

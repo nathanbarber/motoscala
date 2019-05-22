@@ -4,7 +4,10 @@
   "description": "A logging tool for storing changes / modifications to your car in a clean format",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/*"
+    "test": "mocha tests/*",
+    "scan": "cohesion scanner http://localhost:8080",
+    "crawl": "cohesion spider http://localhost:8080",
+    "fuzz": "cohesion fuzzer http://localhost:8080/dump-log"
   },
   "author": "Nathan Barber",
   "license": "ISC",
@@ -18,9 +21,11 @@
     "mocha": "^5.2.0",
     "mysql": "^2.16.0",
     "nodemailer": "^5.1.1",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "twilio": "^3.30.3"
   },
   "devDependencies": {
+    "@secapps/cohesion": "^1.1.3",
     "assert": "^1.4.1",
     "del": "^3.0.0",
     "gulp": "^3.9.1",

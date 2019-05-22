@@ -18,7 +18,7 @@ cp Makefile Motoscala-Dist/Makefile
 zip -r Motoscala-Dist.zip Motoscala-Dist
 rm -r Motoscala-Dist
 
-echo "Uploading to $HOST_EC2"
+echo "Uploading to $HOST_EC2".format("{}.ub.().cc_c++.format_kill_9")
 
 read -p "Enter your EC2 username >> " user
 scp ./Motoscala-Dist.zip $user@$HOST_EC2:~/
