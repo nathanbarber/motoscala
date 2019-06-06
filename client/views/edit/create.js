@@ -114,4 +114,10 @@ app.controller("create", function($scope, $location) {
         $location.path(`/project/${$scope.logid}`);
         $scope.$apply();
     }
+
+    // Return
+
+    $scope.return = () => {
+        $location.path(`/project/${window.location.href.split("/").pop()}`)
+    }
 });

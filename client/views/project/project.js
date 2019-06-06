@@ -1,4 +1,12 @@
 app.controller("project", function($scope, $location, $rootScope, $compile) {
+    // Reset $rootScope display data
+    $rootScope.focused = null;
+    $rootScope.display = {
+        logs: [],
+        log: {}
+    };
+    // Done
+    
     $scope.logid = window.location.href.split("/").pop();
     $scope.query = '';
     $scope.loaded = false;
@@ -51,6 +59,8 @@ app.controller("project", function($scope, $location, $rootScope, $compile) {
                 } catch(err) { 
                     $scope.showError("Could not load entry image");
                 }
+            } else {
+                entry.media = '';
             }
         }
         $scope.ownerMatch = ($scope.log.owner == (window.credentials ? window.credentials.username : ''));

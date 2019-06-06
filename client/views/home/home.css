@@ -1,3 +1,29 @@
+.section {
+    min-height: 100vh;
+}
+.hero {
+    background-attachment: fixed;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+.block-arrow {
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+    transform: rotate(45deg);
+    background-color: white;
+    z-index: 1000;
+    width: 100px;
+    height: 100px;
+}
+
+.home {
+    padding-bottom: 50px;
+    min-height: initial;
+}
+
 .icon {
     width: 80%;
     margin-top: 50px;
@@ -20,4 +46,12 @@
 }
 .get-started-button:hover {
     background-color: var(--accent-color-lighter);
+}
+
+.hero-engine {
+    background-image: url(/lib/engine.jpg);
+}
+
+.about {
+    background-color: white;
 }
